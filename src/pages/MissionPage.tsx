@@ -1,0 +1,893 @@
+'use client';
+
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Heart, 
+  Users, 
+  Leaf, 
+  Shield, 
+  Sparkles, 
+  Home, 
+  BarChart3, 
+  MessageCircle, 
+  BookOpen, 
+  HeartHandshake, 
+  Handshake,
+  Landmark,
+  Sun,
+  GraduationCap,
+  ArrowRight,
+  X,
+  Radar
+} from 'lucide-react';
+import { Button } from '../components/ui/button';
+import { Card } from '../components/ui/card';
+import { useState, useRef, useEffect } from 'react';
+import sparkPointIcon from 'figma:asset/046ca85659860578eeeab6a45f52700c54c519a3.png';
+import stickyBackground from 'figma:asset/c4e1406ca17d5d9941f67714b4ad381639235894.png';
+import learningImg from 'figma:asset/ce0a67a45092b4432ec7c00f4a17cb5a77e95a50.png';
+import voiceImg from 'figma:asset/90544aa933b2c117f40fb5271f7b12942198041b.png';
+import partnersImg from 'figma:asset/5463509e242f1244d018bbff5b9c9fc1831a9b2f.png';
+import preparednessImg from 'figma:asset/56901f1a91f140dcee14c66f977ed2a0bd9120ed.png';
+
+// --- DATA: Sectors & Partners ---
+
+type Sector = {
+  id: string;
+  title: string;
+  description: string;
+  color: string;
+  icon: any; // LucideIcon
+  partners: string[];
+  examples?: string[];
+};
+
+const SECTORS_DATA: Sector[] = [
+  {
+    id: 'edu-youth',
+    title: 'Education & Youth',
+    description: 'Empowering the next generation through learning, leadership, and support.',
+    color: '#FDB515', // Gold
+    icon: GraduationCap,
+    partners: [
+      'Transylvania County Schools',
+      'TC STRONG',
+      'Rise & Shine',
+      'Mountain Roots',
+      'Cindy Platt Boys & Girls Club'
+    ],
+    examples: ['Youth leadership summits', 'In-school mental health initiatives']
+  },
+  {
+    id: 'nonprofits',
+    title: 'Nonprofits & Community',
+    description: 'Strengthening the safety net through coordinated resource sharing.',
+    color: '#E03694', // Pink
+    icon: HeartHandshake,
+    partners: [
+      'United Way of Transylvania County',
+      'The Sharing House',
+      'Sharing House',
+      'Pisgah Legal Services',
+      'Smart Start of Transylvania County'
+    ],
+    examples: ['Resource coordination meetings', 'Shared case management tools']
+  },
+  {
+    id: 'health-academic',
+    title: 'Health & Academic',
+    description: 'Bridging clinical care, higher education, and community wellness.',
+    color: '#9E509F', // Purple
+    icon: BookOpen, // Using BookOpen to represent the Academic/Research side, or Heart for Health
+    partners: [
+      'Blue Ridge Community College',
+      'UNC Health Pardee',
+      'Transylvania Public Health',
+      'Brevard College',
+      'Western Carolina University'
+    ],
+    examples: ['Community health assessments', 'Student internship pathways']
+  },
+  {
+    id: 'civic-gov',
+    title: 'Civic & Government',
+    description: 'Ensuring public safety, infrastructure, and crisis response.',
+    color: '#F15F48', // Orange/Red
+    icon: Landmark,
+    partners: [
+      'City of Brevard',
+      'Transylvania County Government',
+      'Emergency Management Services',
+      'Brevard Police Department',
+      'Transylvania County Sheriff\'s Office'
+    ],
+    examples: ['Disaster response planning', 'Civic engagement forums']
+  },
+  {
+    id: 'faith',
+    title: 'Faith & Community',
+    description: 'Nurturing spirit and connection through trusted local congregations.',
+    color: '#4F46E5', // Indigo/Blue for a distinct calm tone
+    icon: Sun,
+    partners: [
+      'Local Churches & Faith Groups',
+      'Bread of Life',
+      'Interfaith Coalition',
+      'Center for Spiritual Living'
+    ],
+    examples: ['Food distribution networks', 'Community healing services']
+  }
+];
+
+// --- COMPONENTS ---
+
+// 1. Listen • Learn • Lead Diagram (Preserved)
+function ListenLearnLeadDiagram() {
+  const [hoveredArc, setHoveredArc] = useState<string | null>(null);
+
+  // Configuration for the 3 Arcs
+  const arcs = [
+    {
+      id: 'listen',
+      label: 'Listen',
+      color: '#FDB515', // Gold
+      startAngle: -145,
+      endAngle: -35,
+      centerAngle: -90,
+      nodes: [
+        { icon: BarChart3, label: 'Community Research', angle: -125 },
+        { icon: MessageCircle, label: 'Story Collection', angle: -55 },
+      ]
+    },
+    {
+      id: 'lead', // Right
+      label: 'Lead',
+      color: '#F15F48', // Red/Orange
+      startAngle: -25,
+      endAngle: 85,
+      centerAngle: 30,
+      nodes: [
+        { icon: Handshake, label: 'Collaborative Initiatives', angle: 5 },
+        { icon: Home, label: 'Community Resilience Projects', angle: 65 },
+      ]
+    },
+    {
+      id: 'learn', // Left
+      label: 'Learn',
+      color: '#9E509F', // Purple
+      startAngle: 95,
+      endAngle: 205,
+      centerAngle: 150,
+      nodes: [
+        { icon: BookOpen, label: 'Community Education & Training', angle: 125 },
+        { icon: HeartHandshake, label: 'Leadership & Well-Being Programs', angle: 185 },
+      ]
+    }
+  ];
+
+  // Helper to calculate SVG path for an arc
+  const createArcPath = (startAngle: number, endAngle: number, radius: number, cx: number, cy: number) => {
+    const start = polarToCartesian(cx, cy, radius, endAngle);
+    const end = polarToCartesian(cx, cy, radius, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    return [
+      "M", start.x, start.y, 
+      "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+    ].join(" ");
+  };
+
+  const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
+    const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+    return {
+      x: centerX + (radius * Math.cos(angleInRadians)),
+      y: centerY + (radius * Math.sin(angleInRadians))
+    };
+  };
+
+  // Diagram dimensions
+  const size = 800;
+  const center = size / 2;
+  const arcRadius = 180;
+  const nodeRadius = 320;
+
+  return (
+    <div className="relative w-full aspect-square md:aspect-auto md:h-[600px] max-w-[800px] mx-auto flex flex-col md:block items-center justify-center">
+      
+      {/* --- Desktop/Tablet SVG Diagram --- */}
+      <div className="hidden md:block absolute inset-0">
+        <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full overflow-visible">
+          <defs>
+            {arcs.map(arc => (
+              <radialGradient key={arc.id} id={`grad-${arc.id}`} cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stopColor={arc.color} stopOpacity="0.1" />
+                <stop offset="100%" stopColor={arc.color} stopOpacity="0" />
+              </radialGradient>
+            ))}
+            <filter id="glow-strong">
+              <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <filter id="glow-soft">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          {arcs.map((arc) => {
+            const isHovered = hoveredArc === arc.id;
+            const isDimmed = hoveredArc && hoveredArc !== arc.id;
+            
+            return (
+              <g key={arc.id} 
+                 onMouseEnter={() => setHoveredArc(arc.id)}
+                 onMouseLeave={() => setHoveredArc(null)}
+                 className="cursor-pointer transition-opacity duration-500"
+                 style={{ opacity: isDimmed ? 0.3 : 1 }}
+              >
+                {/* Connector Lines to Nodes */}
+                {arc.nodes.map((node, i) => {
+                  const startPos = polarToCartesian(center, center, arcRadius + 20, node.angle);
+                  const endPos = polarToCartesian(center, center, nodeRadius - 40, node.angle);
+                  return (
+                    <motion.line 
+                      key={i}
+                      x1={startPos.x} y1={startPos.y}
+                      x2={endPos.x} y2={endPos.y}
+                      stroke={arc.color}
+                      strokeWidth={isHovered ? 2 : 1}
+                      strokeDasharray="4 4"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      whileInView={{ pathLength: 1, opacity: 0.4 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1, delay: 0.5 }}
+                    />
+                  );
+                })}
+
+                {/* Arc Segment */}
+                <motion.path
+                  d={createArcPath(arc.startAngle, arc.endAngle, arcRadius, center, center)}
+                  fill="none"
+                  stroke={arc.color}
+                  strokeWidth="36"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  style={{ filter: isHovered ? "url(#glow-strong)" : "none" }}
+                  className="transition-all duration-300"
+                />
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* HTML Layer for Interactivity & Labels */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Center Hub */}
+          <motion.div 
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-20 pointer-events-auto"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <div className="relative w-32 h-32 rounded-full bg-[#1A1A1A] border-2 border-[#E03694] flex items-center justify-center shadow-[0_0_40px_rgba(224,54,148,0.4)]">
+              {/* Inner Spark */}
+              <motion.div 
+                className="absolute inset-0 rounded-full"
+                animate={{ boxShadow: ["0 0 20px rgba(224,54,148,0.2)", "0 0 40px rgba(224,54,148,0.5)", "0 0 20px rgba(224,54,148,0.2)"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="text-center z-10">
+                <img 
+                  src={sparkPointIcon} 
+                  alt="Connection" 
+                  className="w-12 h-12 mx-auto mb-1 object-contain"
+                />
+                <span className="text-white font-bold text-sm tracking-wider uppercase">Connection</span>
+              </div>
+              
+              {/* Decorative Brackets */}
+              <div className="absolute top-4 left-4 w-3 h-3 border-t-2 border-l-2 border-[#E03694]" />
+              <div className="absolute top-4 right-4 w-3 h-3 border-t-2 border-r-2 border-[#E03694]" />
+              <div className="absolute bottom-4 left-4 w-3 h-3 border-b-2 border-l-2 border-[#E03694]" />
+              <div className="absolute bottom-4 right-4 w-3 h-3 border-b-2 border-r-2 border-[#E03694]" />
+            </div>
+          </motion.div>
+
+          {/* Arc Labels & Nodes */}
+          {arcs.map((arc) => {
+            // Calculate label position (mid-arc)
+            const labelPos = polarToCartesian(50, 50, 22.5, arc.centerAngle); 
+            const isHovered = hoveredArc === arc.id;
+            const isDimmed = hoveredArc && hoveredArc !== arc.id;
+
+            return (
+              <div key={arc.id} className={`transition-opacity duration-500 ${isDimmed ? 'opacity-30' : 'opacity-100'}`}>
+                {/* Arc Label */}
+                <div 
+                  className="absolute transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer"
+                  style={{ left: `${labelPos.x}%`, top: `${labelPos.y}%` }}
+                  onMouseEnter={() => setHoveredArc(arc.id)}
+                  onMouseLeave={() => setHoveredArc(null)}
+                >
+                  <span 
+                    className="text-white font-bold text-lg uppercase tracking-widest px-3 py-1 rounded-full"
+                    style={{ 
+                      textShadow: `0 2px 10px ${arc.color}`,
+                      backgroundColor: 'rgba(0,0,0,0.4)' 
+                    }}
+                  >
+                    {arc.label}
+                  </span>
+                </div>
+
+                {/* Nodes */}
+                {arc.nodes.map((node, i) => {
+                  const nodePos = polarToCartesian(50, 50, 40, node.angle);
+                  const NodeIcon = node.icon;
+                  
+                  return (
+                    <motion.div
+                      key={i}
+                      className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-40 text-center pointer-events-auto"
+                      style={{ left: `${nodePos.x}%`, top: `${nodePos.y}%` }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                      onMouseEnter={() => setHoveredArc(arc.id)}
+                      onMouseLeave={() => setHoveredArc(null)}
+                    >
+                      <motion.div 
+                        className="w-12 h-12 rounded-full bg-[#1A1A1A] border flex items-center justify-center mb-2 shadow-lg relative z-10"
+                        style={{ borderColor: arc.color }}
+                        whileHover={{ scale: 1.15, boxShadow: `0 0 20px ${arc.color}60`, backgroundColor: '#2a2a2a' }}
+                      >
+                        <NodeIcon size={20} style={{ color: arc.color }} />
+                      </motion.div>
+                      <span className="text-white/80 text-xs font-medium leading-tight">
+                        {node.label}
+                      </span>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* --- Mobile View (Stacked) --- */}
+      <div className="md:hidden w-full flex flex-col items-center space-y-8 py-8">
+        {/* Center Hub Mobile */}
+        <div className="relative w-28 h-28 rounded-full bg-[#1A1A1A] border-2 border-[#E03694] flex items-center justify-center shadow-[0_0_30px_rgba(224,54,148,0.3)] mb-4">
+          <img 
+            src={sparkPointIcon} 
+            alt="Connection" 
+            className="w-8 h-8 object-contain mb-1"
+          />
+          <span className="text-white font-bold text-xs uppercase block text-center">Connection</span>
+        </div>
+
+        {/* Stacked Arcs */}
+        <div className="w-full space-y-6">
+          {arcs.map((arc) => (
+            <div key={arc.id} className="bg-white/5 rounded-2xl p-6 border border-white/5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-3 h-10 rounded-full" style={{ backgroundColor: arc.color }} />
+                <h3 className="text-2xl font-bold text-white tracking-wide">{arc.label}</h3>
+              </div>
+              
+              <div className="grid grid-cols-1 gap-4">
+                {arc.nodes.map((node, i) => {
+                  const NodeIcon = node.icon;
+                  return (
+                    <div key={i} className="flex items-center gap-4">
+                      <div 
+                        className="w-10 h-10 rounded-full bg-black/40 border flex-shrink-0 flex items-center justify-center"
+                        style={{ borderColor: arc.color }}
+                      >
+                        <NodeIcon size={18} style={{ color: arc.color }} />
+                      </div>
+                      <span className="text-white/80 text-sm font-medium">{node.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 2. Animated Stacked Anchor Component
+function StackedAnchor() {
+  const [wordIndex, setWordIndex] = useState(0);
+  const words = ["Listening", "Learning", "Leading", "Strengthened"];
+  
+  useEffect(() => {
+    // Only cycle if we haven't reached the last word
+    if (wordIndex < words.length - 1) {
+      const timer = setTimeout(() => {
+        setWordIndex(prev => prev + 1);
+      }, 1500); // Calm pacing: 1.5s per word
+      return () => clearTimeout(timer);
+    }
+  }, [wordIndex, words.length]);
+
+  const fontStyles = {
+    fontFamily: '"Manrope", sans-serif',
+    fontSize: 'clamp(3.25rem, 7vw, 4.625rem)',
+    fontWeight: 800,
+    lineHeight: '1.15',
+    letterSpacing: '-1.5px',
+    textShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center mb-10">
+      {/* Container for animated text - increased height to prevent cropping */}
+      <div 
+        className="h-[1.4em] relative flex items-center justify-center w-full overflow-hidden"
+        style={fontStyles}
+      >
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={words[wordIndex]}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="block text-white"
+          >
+            {words[wordIndex]}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+      
+      <span 
+        className="block text-white mt-1"
+        style={fontStyles}
+      >
+        Through
+      </span>
+      
+      <span 
+        className="block text-white mt-1"
+        style={fontStyles}
+      >
+        Connection
+      </span>
+    </div>
+  );
+}
+
+// 3. Main Page Component
+export function MissionPage() {
+  const navigate = useNavigate();
+  const [selectedSector, setSelectedSector] = useState<Sector | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Scroll Parallax Hooks
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, [0, 1000], [0, 200]); // Moves slower than scroll
+
+  // Scroll Helpers
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className="min-h-screen relative" ref={containerRef}>
+      {/* 1. Immersive Sticky Background */}
+      <div className="fixed inset-0 z-0 overflow-hidden">
+        {/* Animated Gradient Background */}
+        <motion.div 
+          style={{ y: backgroundY }} // Parallax Effect
+          className="absolute inset-0 w-full h-[120%]" // Taller to allow parallax movement
+        >
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${stickyBackground})`,
+            }}
+          />
+          
+          {/* Subtle Gradient Overlay for Text Legibility (Match Homepage Vibe) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+        </motion.div>
+      </div>
+
+      {/* 2. Hero Content (Transparent) */}
+      <section className="relative z-10 pt-48 pb-32 px-6 min-h-[90vh] flex flex-col justify-center items-center text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-4xl mx-auto"
+        >
+          {/* Stacked Animated Anchor */}
+          <StackedAnchor />
+          
+          <div className="max-w-2xl mx-auto space-y-8 mb-12">
+            <p className="text-xl md:text-2xl text-white font-medium leading-relaxed">
+              SparkPoint fosters community well-being rooted in connection.
+            </p>
+
+            <p className="text-lg md:text-xl text-white/80 font-serif italic leading-relaxed font-light">
+              We strengthen Transylvania County by aligning people and organizations around community voice—so resources are shared openly, trust grows, and our region becomes more resilient over time.
+            </p>
+          </div>
+
+          {/* Micro-Nav Buttons */}
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            {[
+              { label: 'How We Work', target: 'section-framework' },
+              { label: 'What It Looks Like', target: 'section-practice' },
+              { label: 'Who We Work With', target: 'section-network' }
+            ].map((btn) => (
+              <button
+                key={btn.label}
+                onClick={() => scrollToSection(btn.target)}
+                className="px-6 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white text-sm font-semibold tracking-wide hover:bg-white hover:text-[#E03694] transition-all shadow-sm"
+              >
+                {btn.label} &darr;
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* 3. A Feedback Loop Rooted in Community (Listen. Learn. Lead.) - Semi-Transparent Dark */}
+      <section id="section-framework" className="relative z-10 py-28 px-4 bg-[#121214]/90 backdrop-blur-xl border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+           {/* Section Header */}
+           <motion.div 
+             className="text-center mb-16 max-w-3xl mx-auto"
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+             transition={{ duration: 0.8 }}
+           >
+              <h2 className="text-white text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                A Feedback Loop Rooted in Community
+              </h2>
+              <p className="text-white/60 text-xl font-light mb-8">
+                How SparkPoint turns listening into action.
+              </p>
+              <div className="inline-block px-4 py-1 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-[#E03694] tracking-widest uppercase mb-4">
+                The Engine
+              </div>
+           </motion.div>
+
+           {/* Diagram */}
+           <motion.div 
+             className="relative rounded-[40px] bg-[#000000]/40 border border-white/10 shadow-2xl overflow-hidden p-6 md:p-10 mb-16"
+             initial={{ opacity: 0, scale: 0.98 }}
+             whileInView={{ opacity: 1, scale: 1 }}
+             viewport={{ once: true }}
+             transition={{ duration: 0.8 }}
+             style={{ boxShadow: '0 25px 60px rgba(0,0,0,0.5)' }}
+           >
+              <ListenLearnLeadDiagram />
+           </motion.div>
+
+           {/* 3 Columns Explaining The Loop */}
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-white/90 mb-16">
+              <div className="bg-white/5 p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
+                <h3 className="text-[#FDB515] font-bold text-xl mb-4 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#FDB515]"></span> Listen
+                </h3>
+                <p className="text-white/70 leading-relaxed">
+                  We start by listening to lived experience and community voice, creating spaces where people can safely share what’s working, what’s missing, and what matters.
+                </p>
+              </div>
+              
+              <div className="bg-white/5 p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
+                <h3 className="text-[#9E509F] font-bold text-xl mb-4 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#9E509F]"></span> Learn
+                </h3>
+                <p className="text-white/70 leading-relaxed">
+                  We learn alongside partners through shared insight and reflection, translating community input into shared understanding across sectors.
+                </p>
+              </div>
+
+              <div className="bg-white/5 p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
+                <h3 className="text-[#F15F48] font-bold text-xl mb-4 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#F15F48]"></span> Lead
+                </h3>
+                <p className="text-white/70 leading-relaxed">
+                  We lead by convening collaborative action—creating space for connection, coordination, and long-term resilience.
+                </p>
+              </div>
+           </div>
+
+           <motion.div 
+             initial={{ opacity: 0 }}
+             whileInView={{ opacity: 1 }}
+             viewport={{ once: true }}
+             className="text-center"
+           >
+             <p className="text-white/50 text-lg font-serif italic">
+               This isn't just a process—it's a living promise to stay accountable to the community we serve.
+             </p>
+           </motion.div>
+        </div>
+      </section>
+
+      {/* 4. Mission in Practice - Semi-Transparent Light */}
+      <section id="section-practice" className="relative z-10 py-24 px-6 bg-[#FAFAFA]/80 backdrop-blur-xl border-t border-white/50">
+        <div className="relative z-10 max-w-7xl mx-auto">
+           {/* Header */}
+           <motion.div
+             initial={{ opacity: 0, y: 20 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+             className="text-center mb-16"
+           >
+             <h2 className="text-gray-900 text-4xl md:text-5xl font-bold mb-6">What This Looks Like in Real Life</h2>
+             <p className="text-gray-600 text-xl max-w-3xl mx-auto leading-relaxed">
+               Connection becomes powerful when it turns into action. Here are a few ways SparkPoint shows up across the community.
+             </p>
+           </motion.div>
+
+           {/* 4 Photo Cards Grid */}
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+             {[
+               {
+                 title: 'Community Learning',
+                 text: 'Large-scale learning that strengthens how our community supports brain health and well-being.',
+                 image: learningImg,
+                 alt: '500+ attendees at Dr. Ora Wells’ Brain Health keynote at Brevard College'
+               },
+               {
+                 title: 'Community Voice',
+                 text: 'We listen with care and turn lived experience into insights that help partners respond better.',
+                 image: voiceImg,
+                 alt: 'Helene Tribute story collection behind-the-scenes'
+               },
+               {
+                 title: 'Partners in Action',
+                 text: 'Collaboration that moves practical support to the people who need it—fast and locally.',
+                 image: partnersImg,
+                 alt: 'SparkPoint and partners packing wellness packs'
+               },
+               {
+                 title: 'Preparedness & Care',
+                 text: 'Building local capacity so care and support are ready when crisis hits.',
+                 image: preparednessImg,
+                 alt: 'Psychological First Aid training session'
+               }
+             ].map((item, idx) => (
+               <motion.div
+                 key={item.title}
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: idx * 0.1 }}
+                 className="group relative h-[400px] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500"
+               >
+                 {/* Background Image */}
+                 <div className="absolute inset-0">
+                   <img 
+                     src={item.image} 
+                     alt={item.alt}
+                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                   />
+                   {/* Gradient Overlay */}
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 group-hover:via-black/50 transition-colors duration-500" />
+                 </div>
+
+                 {/* Content */}
+                 <div className="relative h-full flex flex-col justify-between p-8 z-10">
+                   {/* Badge */}
+                   <div className="self-start">
+                     <span className="inline-block px-3 py-1 rounded-full bg-[#E03694]/90 backdrop-blur-md text-white text-xs font-bold tracking-wider uppercase shadow-sm border border-white/20">
+                       {item.title}
+                     </span>
+                   </div>
+
+                   {/* Text */}
+                   <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                     <p className="text-white text-lg md:text-xl font-medium leading-relaxed drop-shadow-md group-hover:text-white/100 text-white/95">
+                       {item.text}
+                     </p>
+                   </div>
+                 </div>
+               </motion.div>
+             ))}
+           </div>
+        </div>
+      </section>
+
+      {/* 5. Working Together Across Sectors - Solid/Opaque for Clarity */}
+      <section 
+        id="section-network"
+        className="relative z-10 py-24 px-6 bg-[#FFFFFF]/95 backdrop-blur-sm border-t border-gray-100"
+      >
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Working Together Across Sectors
+            </h2>
+            <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+              We don't direct the work—we connect the experts. By linking schools, nonprofits, healthcare, and local government, we help our partners move faster and reach further than they could alone.
+            </p>
+          </motion.div>
+
+          {/* Sector Hubs Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {SECTORS_DATA.map((sector, index) => {
+              const Icon = sector.icon;
+              return (
+                <motion.div
+                  key={sector.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -5 }}
+                >
+                  <button 
+                    onClick={() => setSelectedSector(sector)}
+                    className="w-full h-full text-left bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group flex flex-col"
+                  >
+                    <div className="h-2 w-full" style={{ backgroundColor: sector.color }} />
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div 
+                        className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
+                        style={{ backgroundColor: `${sector.color}15`, color: sector.color }}
+                      >
+                        <Icon size={24} strokeWidth={2.5} />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">
+                        {sector.title}
+                      </h3>
+                      <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-1">
+                        {sector.description}
+                      </p>
+                      <div className="flex items-center justify-between mt-auto">
+                        <span className="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-600">
+                          {sector.partners.length} Partners
+                        </span>
+                        <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-1" style={{ color: sector.color }}>
+                          View <ArrowRight size={12} />
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Rooted in Transylvania County - Glass Reveal (Visual Pause) */}
+      <section className="relative z-10 py-40 px-6 bg-[#1A1A1A]/80 backdrop-blur-md text-white text-center border-t border-white/5">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-8">Rooted in Transylvania County</h2>
+            <div className="text-lg md:text-xl text-gray-200 leading-relaxed space-y-10 font-light">
+              <p>
+                SparkPoint began by listening. That simple act shaped our feedback loop and continues to guide how we grow, adapt, and serve.
+              </p>
+              <p>
+                We don’t believe in scaling ideas before they’re rooted in trust. As neighboring communities express interest, we share what we’ve learned carefully—prioritizing stewardship, relationships, and local voice over speed.
+              </p>
+              <p className="text-white font-medium text-2xl pt-4 font-serif italic">
+                The feedback loop never ends — and that’s what keeps SparkPoint accountable to the people it serves.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTOR MODAL (Pop-up) - Preserved */}
+      <AnimatePresence>
+        {selectedSector && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedSector(null)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            
+            <motion.div
+              layoutId={`sector-${selectedSector.id}`}
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
+            >
+              <div className="p-8 pb-6 relative overflow-hidden" style={{ backgroundColor: `${selectedSector.color}10` }}>
+                <button 
+                  onClick={() => setSelectedSector(null)}
+                  className="absolute top-4 right-4 p-2 bg-white/50 hover:bg-white rounded-full transition-colors"
+                >
+                  <X size={20} className="text-gray-500" />
+                </button>
+                
+                <div className="flex items-center gap-4 mb-4 relative z-10">
+                  <div className="p-3 bg-white rounded-xl shadow-sm" style={{ color: selectedSector.color }}>
+                    <selectedSector.icon size={32} />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">{selectedSector.title}</h3>
+                    <p className="text-sm font-medium opacity-60 uppercase tracking-wider" style={{ color: selectedSector.color }}>Sector Hub</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 text-lg">{selectedSector.description}</p>
+                
+                <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-20 blur-3xl" style={{ backgroundColor: selectedSector.color }} />
+              </div>
+
+              <div className="p-8 pt-6 overflow-y-auto">
+                {selectedSector.examples && (
+                  <div className="mb-8 p-6 bg-gray-50 rounded-xl border border-gray-100">
+                    <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Examples of Collaboration</h4>
+                    <ul className="space-y-2">
+                      {selectedSector.examples.map((ex, i) => (
+                        <li key={i} className="flex items-start gap-2 text-gray-700 font-medium">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: selectedSector.color }} />
+                          {ex}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div>
+                  <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Active Partners</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {selectedSector.partners.map((partner, i) => (
+                      <div key={i} className="p-3 rounded-lg border border-gray-100 text-gray-600 hover:bg-gray-50 hover:border-gray-200 transition-colors text-sm font-medium">
+                        {partner}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="p-4 bg-gray-50 border-t border-gray-100 text-center">
+                 <Button 
+                   onClick={() => setSelectedSector(null)}
+                   variant="ghost" 
+                   className="text-gray-500 hover:text-gray-900"
+                 >
+                   Close
+                 </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
