@@ -6,6 +6,7 @@ import { ImpactSection } from '../components/ImpactSection';
 import { ConnectionSection } from '../components/ConnectionSection';
 import { CTAFinal } from '../components/CTAFinal';
 import heleneImage from 'figma:asset/0835779aef52124bf5c00840473e8285f8e0f937.png';
+import echoesImage from 'figma:asset/e4e8c9f59f3a2b2ee1533f1f427ca4a4cb3693a5.png';
 
 const stories = [
   {
@@ -15,7 +16,7 @@ const stories = [
   },
   {
     title: 'Echoes from the Community',
-    image: 'https://images.unsplash.com/photo-1632580254134-94c4a73dab76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21tdW5pdHklMjBnYXRoZXJpbmclMjBwZW9wbGV8ZW58MXx8fHwxNzYxMDE5NzQ2fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    image: echoesImage,
     caption: 'Voices sharing experiences of connection and belonging that define our community\'s strength and spirit.'
   },
   {
@@ -38,7 +39,7 @@ export function HomePage() {
       <ImpactSection />
       <ConnectionSection />
       <CTAFinal 
-        backgroundImage="https://images.unsplash.com/photo-1694350461777-1519e03ef70a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjBuYXR1cmUlMjBwZWFjZWZ1bHxlbnwxfHx8fDE3NjA5OTcyNjF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+        backgroundImage="https://images.unsplash.com/photo-1694350461777-1519e03ef70a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjBuYXR1cmUlMjBwZWFjZWZ1bHxlbnwxfHx8fDE3NjEwOTcyNjF8MA&ixlib=rb-4.1.0&q=80&w=1080"
       />
     </>
   );
