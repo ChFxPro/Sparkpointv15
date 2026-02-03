@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { Heart, Upload, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -21,6 +22,12 @@ export function StoriesPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD]">
+      <Helmet>
+        <title>Community Stories | SparkPoint</title>
+        <meta name="description" content="Community voices, lived experience, and participatory storytelling." />
+        <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/stories" />
+      </Helmet>
+
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 px-6 overflow-hidden">
         <div className="absolute inset-0 z-0">

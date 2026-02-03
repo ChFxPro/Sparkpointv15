@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { TrendingUp, Users, Heart, Award, Calendar, FileText, Sparkles, ArrowRight } from 'lucide-react';
@@ -101,6 +102,11 @@ export function ImpactPage() {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Our Impact | SparkPoint</title>
+        <meta name="description" content="How SparkPoint supports well-being, resilience, and collaboration." />
+        <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/impact" />
+      </Helmet>
       {/* Enhanced Hero Section */}
       <section ref={heroRef} className="relative pt-32 pb-24 px-6 overflow-hidden">
         {/* Animated Background */}

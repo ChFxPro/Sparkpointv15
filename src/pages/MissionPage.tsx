@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -494,6 +495,11 @@ export function MissionPage() {
 
   return (
     <div className="min-h-screen relative" ref={containerRef}>
+      <Helmet>
+        <title>Our Mission | SparkPoint</title>
+        <meta name="description" content="SparkPoint fosters community well-being rooted in connection." />
+        <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/mission" />
+      </Helmet>
       {/* 1. Immersive Sticky Background */}
       <div className="fixed inset-0 z-0 overflow-hidden">
         {/* Animated Gradient Background */}

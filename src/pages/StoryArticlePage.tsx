@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Share2, Printer, Calendar, User, ArrowRight } from 'lucide-react';
@@ -31,9 +32,21 @@ export function StoryArticlePage() {
   const displayImage = article.image || category.image;
   const isVideoArticle = !!article.videoUrl;
 
+  const metaDescription = article.excerpt || article.subhead || `Read the full story of ${article.title} at SparkPoint.`;
+
+  // Render Helmet for both layouts
+  const pageMeta = (
+    <Helmet>
+      <title>{`${article.title} | SparkPoint Stories`}</title>
+      <meta name="description" content={metaDescription} />
+      <link rel="canonical" href={`https://chfxpro.github.io/sparkpointv15/stories/${category.id}/${article.slug}`} />
+    </Helmet>
+  );
+
   if (isVideoArticle) {
     return (
       <div className="min-h-screen bg-[#FDFDFD]">
+        {pageMeta}
         <article className="max-w-4xl mx-auto px-6 pt-32 pb-24">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-sm font-medium text-gray-500 mb-12 overflow-x-auto whitespace-nowrap">
@@ -133,6 +146,7 @@ export function StoryArticlePage() {
   // Standard Article Layout
   return (
     <div className="min-h-screen bg-white">
+      {pageMeta}
       <article className="max-w-4xl mx-auto px-6 pt-32 pb-24">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm font-medium text-gray-500 mb-8 overflow-x-auto whitespace-nowrap">

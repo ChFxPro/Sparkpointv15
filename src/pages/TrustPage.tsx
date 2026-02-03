@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { ExternalLink, ChevronDown, Check, ArrowRight, Shield, Lock, Eye, Heart } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -22,6 +23,11 @@ export function TrustPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD]">
+      <Helmet>
+        <title>Trust & Accountability | SparkPoint</title>
+        <meta name="description" content="Our commitment to transparency, privacy, and story stewardship." />
+        <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/trust" />
+      </Helmet>
       {/* Hero Section */}
       <section className="pt-40 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

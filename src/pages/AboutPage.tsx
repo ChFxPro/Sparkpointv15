@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { useState, useEffect } from 'react';
 import heroImage from 'figma:asset/0c7f5d615ddb7365345eec2cd86bf98d3be9ca22.png';
@@ -148,14 +149,12 @@ const staff = [
 ];
 
 const boardMembers = [
-  // ... (keeping existing data if possible, but for brevity in this full file write, I will include them to ensure nothing breaks)
   {
     name: 'Dr. Ora Wells',
     role: 'Board President',
     headshot: 'https://images.squarespace-cdn.com/content/v1/5e13af05d72fc96230cefbd1/1683137865474-WN2HWBQ0ZIVNFP7T8KI1/Board-%26-Staff-Headshots_0008_Layer-4.png?format=2500w',
     bio: `As a newly retired pediatrician, Dr. Ora Wells continues his lifetime passion for wellness. He served Hendersonville Pediatrics for over 30 years, specializing in ADHD, allergies, and asthma management. Dr. Wells began his medical career at the University of North Carolina at Chapel Hill and earned his medical degree from the Medical College of Georgia. He taught pediatrics as an assistant clinical professor at Charlotte Memorial Hospital, where he also completed his residency.\n\nAfter teaching, Dr. Wells joined Hendersonville Pediatrics, where he practiced for decades. He regularly volunteers on medical trips to Haiti through Consider Haiti and is an avid supporter of Young Life. He enjoys traveling with his wife to visit their children and grandchildren, playing the bagpipes, and riding his motorcycle — and may be spotted around Brevard in his 1954 Chevy pickup.`
   },
-  // ... including other board members for completeness
   {
     name: 'Mayor Maureen Copelof',
     role: 'Board Member',
@@ -196,7 +195,7 @@ const boardMembers = [
     name: 'Shannon Meadows Allison',
     role: 'Board Member',
     headshot: 'https://images.squarespace-cdn.com/content/v1/5e13af05d72fc96230cefbd1/3ffbd890-f8a9-4f82-9fea-4ce17024fc33/image0.jpeg?format=1500w',
-    bio: `Shannon Meadows Allison lives on her family��s multi-generational cattle farm in Transylvania County. Her lived experience with Ehlers-Danlos syndrome inspired her to pursue nursing and community health work.\n\nShe is a registered nurse, a Women’s Health Nurse Practitioner student at Duke University, and the founder of Meadows Collaborative Health & Consulting. Shannon is passionate about advancing health literacy, resilience, and healthcare access in rural communities.`
+    bio: `Shannon Meadows Allison lives on her familys multi-generational cattle farm in Transylvania County. Her lived experience with Ehlers-Danlos syndrome inspired her to pursue nursing and community health work.\n\nShe is a registered nurse, a Women’s Health Nurse Practitioner student at Duke University, and the founder of Meadows Collaborative Health & Consulting. Shannon is passionate about advancing health literacy, resilience, and healthcare access in rural communities.`
   }
 ];
 
@@ -225,6 +224,12 @@ export function AboutPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] relative">
+      <Helmet>
+        <title>About SparkPoint | Built Through Connection</title>
+        <meta name="description" content="SparkPoint’s mission, history, and community-centered approach." />
+        <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/about" />
+      </Helmet>
+
       {/* 1. Hero Section — Documentary Presence with Connection Anchor */}
       <section className="relative h-screen min-h-[650px] flex items-end justify-center overflow-hidden pb-4 md:pb-8 bg-[#0a0a0a]">
         {/* Full-width image */}
@@ -400,434 +405,243 @@ export function AboutPage() {
                   <br />
                   <span className="inline-block mt-4 text-gray-300 text-lg">
                     By fostering connection, supporting collaboration across sectors,
-                    and keeping community voice at the center,
-                    SparkPoint works to strengthen well-being, trust, and collective capacity —
-                    not only in moments of crisis, but over time.
+                    and empowering community voice, we are building a foundation where every person can thrive.
                   </span>
                 </p>
               </div>
-
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* 3. Timeline / Milestones — Proof Without Noise */}
-      <section className="py-32 px-6 bg-gradient-to-b from-[#FAFAFA] via-[#F3F3F1] to-[#FAFAFA] border-t border-gray-100/50">
-        <div className="max-w-5xl mx-auto">
+      {/* 3. Timeline / Milestones */}
+      <section className="py-24 px-6 bg-[#0f0f0f]">
+        <div className="max-w-7xl mx-auto">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="mb-24 text-center"
+            className="text-center mb-16"
           >
-            <h3 className="text-2xl font-bold text-gray-900 mb-4 tracking-tight">Milestones of Impact</h3>
-            <p className="text-gray-500 text-lg font-medium">A history of accumulated presence.</p>
+            <span className="text-[#E03694] font-bold tracking-wider text-sm uppercase mb-3 block">Our Journey</span>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Milestones of Impact</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+              From the foundational Blue Zones work to our current regional role, every step has been guided by community need.
+            </p>
           </motion.div>
 
-          <div className="relative ml-4 md:ml-12">
-            
-            {/* Foundational Phase: Blue Zones Project (2019–2022) */}
+          {/* Phase 0: Blue Zones (Distinct Style) */}
+          <div className="mb-20 max-w-4xl mx-auto">
             <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative mb-16 pl-6 border-l-[6px] border-[#1c4696]/20 bg-[#1c4696]/[0.02] rounded-r-xl overflow-hidden"
+              className="relative p-8 md:p-12 rounded-2xl overflow-hidden border border-white/10"
             >
-              <div className="flex flex-col lg:flex-row">
-                <div className="p-6 md:p-8 flex-1">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
-                       <span className="text-[#1c4696] font-bold text-sm uppercase tracking-widest bg-[#1c4696]/10 px-3 py-1 rounded-full self-start">
-                         {blueZonesPhase.phaseLabel}
-                       </span>
-                       <span className="text-[#1c4696] font-bold text-xl tracking-tight">
-                         {blueZonesPhase.years}
-                       </span>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-2xl font-bold text-[#1c4696] tracking-tight mb-2">
-                        {blueZonesPhase.title}
-                      </h4>
-                      <p className="text-[#1c4696]/80 text-lg font-medium mb-4">
-                        {blueZonesPhase.subtitle}
-                      </p>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                        {blueZonesPhase.achievements.map((achievement, i) => (
-                          <div key={i} className="flex items-center gap-2 text-[#1c4696]/70">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#7ab1e2]" />
-                            <span className="text-sm font-medium">{achievement}</span>
-                          </div>
-                        ))}
-                      </div>
+              {/* Blue Background with Image Blend */}
+              <div className="absolute inset-0 z-0">
+                <img src={blueZonesImage} alt="" className="w-full h-full object-cover opacity-20 grayscale mix-blend-overlay" />
+                <div className="absolute inset-0 bg-[#0057B8] opacity-10 mix-blend-color" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#1a1a1a]/90 to-[#1a1a1a]/40" />
+              </div>
 
-                      {/* 501(c)(3) Status - Metadata, not a timeline node */}
-                      <div className="mt-6 pt-4 border-t border-[#1c4696]/10 flex items-center gap-3">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1c4696" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                          <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                        <span className="text-[#1c4696] font-semibold text-sm">
-                          {blueZonesPhase.legalStatus}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+              <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start">
+                <div className="flex-shrink-0 text-[#E03694] font-bold text-xl md:text-2xl pt-1">
+                  {blueZonesPhase.years}
                 </div>
-                
-                {/* Blue Zones Image */}
-                <div className="lg:w-80 relative min-h-[240px] lg:min-h-0 bg-[#1c4696]/5">
-                   <div className="absolute inset-0 mix-blend-multiply bg-[#1c4696]/10 z-10" />
-                   <img 
-                     src={blueZonesImage} 
-                     alt="Blue Zones Project ribbon cutting" 
-                     className="absolute inset-0 w-full h-full object-cover filter contrast-[0.95] sepia-[0.1]"
-                   />
+                <div className="flex-grow">
+                  <div className="inline-block px-3 py-1 bg-white/10 rounded-full text-xs font-bold text-white mb-4 tracking-wide">
+                    {blueZonesPhase.phaseLabel}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">{blueZonesPhase.title}</h3>
+                  <p className="text-gray-400 mb-6 italic">{blueZonesPhase.subtitle}</p>
+                  
+                  <ul className="space-y-3">
+                    {blueZonesPhase.achievements.map((item, i) => (
+                      <li key={i} className="flex items-center gap-3 text-gray-300">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E03694]" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 pt-6 border-t border-white/10 text-sm text-gray-500">
+                    {blueZonesPhase.legalStatus}
+                  </div>
                 </div>
               </div>
             </motion.div>
+          </div>
 
-            {/* SparkPoint Timeline Spine (Starts 2023) */}
-            <div className="relative">
-              {/* Timeline Spine: Structural Base */}
-              <div className="absolute left-0 top-2 bottom-8 w-1.5 bg-gray-200/40 rounded-full" />
-
-              <div className="space-y-6 relative">
-                {timeline.map((item, index) => {
-                  const isKeyInflection = item.year === '2023';
-                  const isExpanded = expandedIndex === index;
-                  const isAnotherExpanded = expandedIndex !== null && !isExpanded;
-                  
-                  // Placeholder contexts
-                  let imageContext = null;
-                  // @ts-ignore
-                  const realImage = item.image;
-                  // @ts-ignore
-                  const realImageCaption = item.imageCaption;
-                  // @ts-ignore
-                  const gallery = item.gallery;
-
-                  if (item.year === '2023') imageContext = "Founding board meeting";
-                  if (item.year === '2024' && item.milestone.includes("Response")) imageContext = "Emergency supply distribution";
-                  if (item.year === '2024' && item.milestone.includes("Wellness")) imageContext = "Program participant gathering";
-                  
-                  return (
-                    <motion.div
-                      key={index}
-                      layout="position"
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.05 }}
-                      className={`
-                        relative pl-10 md:pl-16 pr-4 py-4 rounded-xl group cursor-pointer transition-all duration-500 ease-out
-                        ${isExpanded ? 'bg-white shadow-xl shadow-gray-200/40 my-8 z-10 scale-[1.02]' : 'hover:bg-white/60 hover:shadow-sm my-0 z-0'}
-                        ${isAnotherExpanded ? 'opacity-40 grayscale-[50%]' : 'opacity-100'}
-                      `}
-                      onClick={() => setExpandedIndex(isExpanded ? null : index)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          setExpandedIndex(isExpanded ? null : index);
-                        }
-                      }}
-                      role="button"
-                      tabIndex={0}
-                      aria-expanded={isExpanded}
-                    >
-                      {/* Active Spine Segment - Responsive */}
-                      <div className={`
-                        absolute left-0 top-0 bottom-0 w-1.5 rounded-full transition-all duration-500
-                        ${isExpanded ? 'bg-[#E03694] shadow-[0_0_12px_rgba(224,54,148,0.4)]' : 'bg-transparent group-hover:bg-[#E03694]/20'}
-                      `} />
-
-                      {/* Timeline Dot - Interactive Anchor */}
-                      <div className={`
-                        absolute -left-[5px] top-8 rounded-full border-[3px] z-20 transition-all duration-500 ease-out
-                        ${isExpanded 
-                          ? 'w-4 h-4 bg-[#E03694] border-white ring-4 ring-[#E03694]/20 scale-125' 
-                          : 'w-3.5 h-3.5 bg-white border-gray-300 group-hover:border-[#E03694] group-hover:scale-125 group-hover:ring-4 group-hover:ring-[#E03694]/10'}
-                      `} />
-                      
-                      <div className="flex flex-col gap-2">
-                        {/* Header Row */}
-                        <div className="flex items-start justify-between w-full">
-                           <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6">
-                            <span className={`
-                              ${isKeyInflection ? 'text-[#E03694] text-2xl font-bold' : 'text-[#E03694] text-xl font-bold'}
-                              md:w-32 flex-shrink-0 tracking-tight transition-colors duration-300 group-hover:text-[#E03694]
-                            `}>
-                              {item.year}
-                            </span>
-                            <h4 className={`
-                              ${isKeyInflection ? 'text-2xl font-bold text-gray-900' : 'text-xl font-bold text-gray-900'}
-                              tracking-tight transition-colors duration-300 group-hover:text-black
-                            `}>
-                              {item.milestone}
-                            </h4>
-                          </div>
-                          
-                          {/* Interaction Cue Icon */}
-                          <div className={`
-                            flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ml-4
-                            ${isExpanded ? 'bg-[#E03694]/10 text-[#E03694] rotate-45' : 'bg-gray-100 text-gray-400 group-hover:bg-[#E03694]/5 group-hover:text-[#E03694]'}
-                          `}>
-                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300">
-                               <path d="M6 1V11M1 6H11" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                             </svg>
-                          </div>
+          {/* SparkPoint Timeline */}
+          <div className="max-w-5xl mx-auto space-y-32">
+             {timeline.map((item, index) => (
+               <div key={item.year} className="relative">
+                 {/* Connector Line (except for last item) */}
+                 {index < timeline.length - 1 && (
+                   <div className="absolute left-1/2 top-20 bottom-[-128px] w-px bg-gradient-to-b from-[#E03694] via-[#E03694]/30 to-transparent md:block hidden" />
+                 )}
+                 
+                 <motion.div
+                   initial={{ opacity: 0, y: 50 }}
+                   whileInView={{ opacity: 1, y: 0 }}
+                   viewport={{ once: true, margin: "-100px" }}
+                   transition={{ duration: 0.8 }}
+                   className="text-center mb-12"
+                 >
+                   <div className="inline-block text-6xl md:text-8xl font-bold text-white/5 tracking-tighter mb-4 relative z-10">
+                     {item.year}
+                   </div>
+                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 mt-[-1rem] relative z-20">
+                     {item.milestone}
+                   </h3>
+                   <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+                     {item.description}
+                   </p>
+                   
+                   <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12">
+                      {item.achievements.map((ach, i) => (
+                        <div key={i} className="flex items-center gap-2 text-sm md:text-base text-[#E03694] font-medium bg-[#E03694]/5 px-4 py-2 rounded-full border border-[#E03694]/20">
+                          {ach}
                         </div>
+                      ))}
+                   </div>
+                 </motion.div>
 
-                        {/* Expanded Content Area */}
-                        <AnimatePresence>
-                          {isExpanded && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.4, ease: "easeInOut" }}
-                              className="overflow-hidden relative"
-                            >
-                              <div className="flex flex-col lg:flex-row gap-8 pb-4 pt-6 border-t border-gray-100 mt-4">
-                                {/* Content Column */}
-                                <div className="flex-1 space-y-6">
-                                  <p className={`
-                                    text-gray-600 text-lg leading-relaxed
-                                    ${isKeyInflection ? 'text-gray-800 font-medium' : ''}
-                                  `}>
-                                    {item.description}
-                                  </p>
-                                  
-                                  <div className="grid grid-cols-1 gap-3">
-                                    {item.achievements.map((achievement, i) => (
-                                      <motion.div 
-                                        key={i} 
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.15 + (i * 0.05) }}
-                                        className="flex items-start gap-3 text-[15px] text-gray-500 leading-relaxed"
-                                      >
-                                        <div className={`
-                                          mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0 
-                                          ${isKeyInflection ? 'bg-[#E03694]/60' : 'bg-gray-300'}
-                                        `} />
-                                        <span className="text-gray-700">{achievement}</span>
-                                      </motion.div>
-                                    ))}
-                                  </div>
-                                </div>
-
-                                {/* Image Column: Real Image, Gallery, or Placeholder */}
-                                {(realImage || imageContext || gallery) && (
-                                  <motion.div 
-                                    initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    transition={{ delay: 0.2, duration: 0.4 }}
-                                    className="w-full lg:w-72 flex-shrink-0 relative"
-                                  >
-                                    {gallery ? (
-                                      <TimelineGallery images={gallery} />
-                                    ) : realImage ? (
-                                      <div className="aspect-[4/3] w-full rounded-lg relative overflow-hidden group/image shadow-md">
-                                         <img 
-                                           src={realImage} 
-                                           alt={item.milestone} 
-                                           className="w-full h-full object-cover transform transition-transform duration-700 group-hover/image:scale-105"
-                                         />
-                                         {realImageCaption && (
-                                           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 pt-8">
-                                              <span className="text-xs text-white/90 font-medium">
-                                                {realImageCaption}
-                                              </span>
-                                           </div>
-                                         )}
-                                      </div>
-                                    ) : (
-                                      <div className="aspect-[4/3] w-full rounded-lg bg-gray-50 border border-gray-100 relative overflow-hidden group/image shadow-inner">
-                                        {/* Architectural Texture */}
-                                        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
-                                        
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                                          <div className="w-10 h-10 rounded-full bg-gray-100 mb-3 flex items-center justify-center border border-gray-200 text-gray-300">
-                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                               <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                               <circle cx="8.5" cy="8.5" r="1.5" />
-                                               <polyline points="21 15 16 10 5 21" />
-                                             </svg>
-                                          </div>
-                                          <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest block mb-1">
-                                            Asset Slot
-                                          </span>
-                                          <span className="text-xs text-gray-400 italic font-serif">
-                                            "{imageContext}"
-                                          </span>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </motion.div>
-                                )}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                        
-                        {/* Collapsed Hint */}
-                        {!isExpanded && (
-                           <motion.div
-                             initial={{ opacity: 0 }}
-                             animate={{ opacity: 1 }}
-                             className="flex items-center gap-2 mt-1"
-                           >
-                              <span className="text-sm font-medium text-gray-400 group-hover:text-[#E03694] transition-colors">
-                                View details
-                              </span>
-                           </motion.div>
-                        )}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
+                 {/* Photo Gallery for this Year */}
+                 <div className="relative z-10">
+                    <TimelineGallery images={item.gallery} />
+                 </div>
+               </div>
+             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. Staff — Human Before Role */}
-      <section className="relative bg-white border-t border-gray-100">
-        {/* Team Hero Image Container */}
-        <div className="relative h-[75vh] min-h-[600px] w-full overflow-hidden">
-          <img 
-            src={teamHeroImage} 
-            alt="The SparkPoint Team" 
-            className="w-full h-full object-cover object-top"
-          />
-          {/* Readability Layer: Soft Gradient Overlay (Black to Transparent) */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-          
-          {/* Text Overlay - Positioned for connection */}
-          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16 z-10">
-             <div className="max-w-6xl mx-auto text-center md:text-left">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight drop-shadow-lg">Our Team</h2>
-                  <p className="text-white/95 text-xl max-w-2xl leading-relaxed font-medium drop-shadow-md">
-                    The people behind the work — showing up with care, consistency, and community commitment.
-                  </p>
-                </motion.div>
-             </div>
-          </div>
-        </div>
+      {/* 4. Team & Board — Human Scale */}
+      <section className="py-32 px-6 bg-[#0a0a0a]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Our Team</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+              Guided by a dedicated staff and a board of local leaders committed to the long-term well-being of our community.
+            </p>
+          </motion.div>
 
-        {/* Staff Grid - Natural continuation */}
-        <div className="py-24 px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-              {staff.map((member) => (
-                <div key={member.name} className="group">
-                  <div className="aspect-[3/4] mb-6 overflow-hidden rounded-lg bg-gray-100 relative">
-                    {member.headshot ? (
-                      <img 
-                        src={member.headshot} 
-                        alt={member.name}
-                        className={`w-full h-full object-cover transition-transform duration-700 ease-out filter grayscale-[20%] group-hover:grayscale-0 ${
-                          // @ts-ignore
-                          member.imageClassName || 'group-hover:scale-105'
-                        }`}
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-50 text-gray-300 font-bold text-4xl">
-                        {member.initials}
+          {/* Staff Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
+            {staff.map((member, index) => (
+              <Dialog key={member.name}>
+                <DialogTrigger asChild>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group cursor-pointer"
+                  >
+                    <div className="relative aspect-[4/5] mb-6 overflow-hidden rounded-xl bg-gray-800">
+                      {member.headshot ? (
+                        <img
+                          src={member.headshot}
+                          alt={member.name}
+                          className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0 ${member.imageClassName || ''}`}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-[#1a1a1a] text-white/20 text-4xl font-bold">
+                          {member.initials}
+                        </div>
+                      )}
+                      
+                      {/* Name Overlay on Hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                      <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
+                        <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
+                        <p className="text-[#E03694] text-sm font-medium tracking-wide uppercase">{member.role}</p>
                       </div>
-                    )}
-                    {/* Subtle Bio Overlay on Hover - Non-intrusive */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black bg-transparent">
-                            Read Bio
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-2xl bg-white/95 backdrop-blur-sm border-none">
-                          <DialogHeader>
-                            <DialogTitle className="text-2xl font-bold text-[#1A1A1A] mb-2">{member.name}</DialogTitle>
-                            <DialogDescription className="text-[#E03694] font-medium mb-4">{member.role}</DialogDescription>
-                          </DialogHeader>
-                          <div className="whitespace-pre-wrap text-gray-600 leading-relaxed max-h-[60vh] overflow-y-auto pr-4">
-                            {member.bio}
-                          </div>
-                        </DialogContent>
-                      </Dialog>
                     </div>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
-                  <p className="text-[#E03694] font-medium">{member.role}</p>
-                </div>
+                  </motion.div>
+                </DialogTrigger>
+                <DialogContent className="bg-[#1a1a1a] border-white/10 text-white max-w-2xl max-h-[85vh] overflow-y-auto">
+                  <DialogHeader>
+                    <div className="flex flex-col md:flex-row gap-8 items-start mb-6">
+                      <div className="w-32 h-32 md:w-48 md:h-48 rounded-lg overflow-hidden flex-shrink-0 bg-gray-800">
+                         {member.headshot ? (
+                           <img src={member.headshot} alt={member.name} className={`w-full h-full object-cover ${member.imageClassName || ''}`} />
+                         ) : (
+                           <div className="w-full h-full flex items-center justify-center text-white/20 text-2xl font-bold">{member.initials}</div>
+                         )}
+                      </div>
+                      <div>
+                        <DialogTitle className="text-3xl font-bold mb-2">{member.name}</DialogTitle>
+                        <DialogDescription className="text-[#E03694] font-medium uppercase tracking-wide text-sm mb-6">
+                          {member.role}
+                        </DialogDescription>
+                        <div className="prose prose-invert prose-sm text-gray-300 leading-relaxed whitespace-pre-wrap">
+                          {member.bio}
+                        </div>
+                      </div>
+                    </div>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            ))}
+          </div>
+
+          {/* Board Grid - Compact */}
+          <div className="mb-20">
+            <h3 className="text-2xl font-bold text-white mb-10 border-l-4 border-[#E03694] pl-4">Board of Directors</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {boardMembers.map((member, index) => (
+                <Dialog key={member.name}>
+                  <DialogTrigger asChild>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05 }}
+                      className="p-6 bg-white/5 hover:bg-white/10 rounded-lg transition-colors cursor-pointer group border border-white/5"
+                    >
+                      <h4 className="font-bold text-white mb-1 group-hover:text-[#E03694] transition-colors">{member.name}</h4>
+                      <p className="text-sm text-gray-500">{member.role}</p>
+                    </motion.div>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[#1a1a1a] border-white/10 text-white max-w-xl">
+                    <DialogHeader>
+                       <div className="flex gap-6 items-start">
+                         <div className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0 bg-gray-800">
+                           <img src={member.headshot} alt={member.name} className="w-full h-full object-cover" />
+                         </div>
+                         <div>
+                           <DialogTitle className="text-xl font-bold mb-1">{member.name}</DialogTitle>
+                           <p className="text-[#E03694] text-sm font-medium mb-4">{member.role}</p>
+                           <DialogDescription className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
+                             {member.bio}
+                           </DialogDescription>
+                         </div>
+                       </div>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. Board — Governance & Guidance */}
-      <section className="py-32 px-6 bg-[#FAFAFA]">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-             initial={{ opacity: 0 }}
-             whileInView={{ opacity: 1 }}
-             viewport={{ once: true }}
-             className="mb-20 text-center max-w-2xl mx-auto"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Board</h2>
-            <p className="text-gray-600 text-lg leading-relaxed">
-              Stewards of the mission, bringing decades of experience in health, leadership, and community service.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {boardMembers.map((member) => (
-              <div key={member.name} className="group">
-                <div className="aspect-square mb-6 overflow-hidden rounded-full bg-gray-200 relative">
-                   <img 
-                      src={member.headshot} 
-                      alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 filter grayscale-[100%] group-hover:grayscale-0"
-                    />
-                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                       <Dialog>
-                        <DialogTrigger asChild>
-                           <Button size="sm" variant="secondary" className="bg-white/90 text-black hover:bg-white">
-                             Bio
-                           </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-xl bg-white/95 backdrop-blur-sm border-none">
-                           <DialogHeader>
-                            <DialogTitle className="text-xl font-bold text-black mb-1">{member.name}</DialogTitle>
-                            <DialogDescription className="text-[#E03694]">{member.role}</DialogDescription>
-                           </DialogHeader>
-                           <div className="whitespace-pre-wrap text-gray-600 text-sm leading-relaxed mt-4">
-                             {member.bio}
-                           </div>
-                        </DialogContent>
-                       </Dialog>
-                     </div>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 text-center">{member.name}</h3>
-                <p className="text-gray-500 text-sm text-center font-medium">{member.role}</p>
-              </div>
-            ))}
-          </div>
+      {/* 5. Team Hero Image — "Us" */}
+      <section className="relative h-[60vh] overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src={teamHeroImage} 
+            alt="SparkPoint Team and Community" 
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
         </div>
       </section>
     </div>

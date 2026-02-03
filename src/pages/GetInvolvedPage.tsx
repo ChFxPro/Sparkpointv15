@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { HandHeart, DollarSign, Handshake, Mail, CheckCircle } from 'lucide-react';
@@ -70,6 +71,11 @@ export function GetInvolvedPage() {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Get Involved | SparkPoint</title>
+        <meta name="description" content="Ways to connect, participate, and collaborate with SparkPoint." />
+        <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/get-involved" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0 z-0">

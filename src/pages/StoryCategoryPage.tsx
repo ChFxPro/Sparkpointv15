@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, Calendar, Clock, Play } from 'lucide-react';
@@ -32,6 +33,11 @@ export function StoryCategoryPage() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
+      <Helmet>
+        <title>{`${category.title} | SparkPoint`}</title>
+        <meta name="description" content={category.description} />
+        <link rel="canonical" href={`https://chfxpro.github.io/sparkpointv15/stories/${category.id}`} />
+      </Helmet>
       {/* Hero Section */}
       <section className="pt-40 pb-20 px-6 relative overflow-hidden bg-white">
         <div className="max-w-4xl mx-auto text-center relative z-10">

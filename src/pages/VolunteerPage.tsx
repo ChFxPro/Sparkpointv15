@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { HandHeart, Handshake, CheckCircle, Loader2 } from 'lucide-react';
@@ -125,6 +126,11 @@ export function VolunteerPage() {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Volunteer | SparkPoint</title>
+        <meta name="description" content="Join our community of dedicated volunteers making a real difference." />
+        <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/volunteer" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0 z-0">

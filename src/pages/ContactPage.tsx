@@ -1,5 +1,6 @@
 'use client';
 
+import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
@@ -51,6 +52,11 @@ export function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] relative"> {/* Warm off-white background */}
+      <Helmet>
+        <title>Contact Us | SparkPoint</title>
+        <meta name="description" content="Ways to connect, participate, and collaborate with SparkPoint." />
+        <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/contact" />
+      </Helmet>
       
       {/* Hero Section */}
       <section className="relative pt-40 pb-24 px-6 overflow-hidden">
