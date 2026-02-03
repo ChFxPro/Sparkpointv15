@@ -6,7 +6,7 @@ export default defineConfig({
   // ✅ GitHub Pages project site base path
   // Your URL: https://chfxpro.github.io/Sparkpointv15/
   // So base must be EXACTLY:
-  base: '/Sparkpointv15/',
+  base: '/sparkpointv15/',
 
   plugins: [react()],
   resolve: {
