@@ -192,8 +192,10 @@ export function GetInvolvedPage() {
                         onClick={() => {
                           if (card.title === 'Donate') {
                             window.location.href = 'https://www.yoursparkpoint.org/donations';
-                          } else if (card.title === 'Volunteer' || card.title === 'Partner With Us') {
-                            navigate('/volunteer');
+                          } else if (card.title === 'Volunteer') {
+                            navigate('/intake?intent=volunteer');
+                          } else if (card.title === 'Partner With Us') {
+                            navigate('/intake?intent=partner');
                           }
                         }}
                       >

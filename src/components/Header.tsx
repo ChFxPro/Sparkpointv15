@@ -27,7 +27,7 @@ const menuItems: MenuItem[] = [
   { label: 'Impact', href: '/impact' },
   { label: 'Get Involved', href: '/get-involved' },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Contact', href: '/intake?intent=contact' },
 ];
 
 export function Header() {
@@ -195,7 +195,7 @@ export function Header() {
                         If something isn’t accessible for you, we want to know.
                       </p>
                       <Link 
-                        to="/contact" 
+                        to="/intake?intent=contact" 
                         className="text-sm font-bold text-[#E03694] hover:underline inline-flex items-center gap-1"
                       >
                         Contact us
@@ -400,7 +400,7 @@ export function Header() {
                    <h3 className="text-white/60 text-xs font-bold uppercase tracking-widest mb-6">About <span translate="no">SparkPoint</span></h3>
                    <div className="grid gap-4">
                       <Link to="/about" onClick={handleLinkClick} className="text-white text-xl font-semibold hover:text-white/80 transition-colors">About Us</Link>
-                      <Link to="/contact" onClick={handleLinkClick} className="text-white text-xl font-semibold hover:text-white/80 transition-colors">Contact</Link>
+                      <Link to="/intake?intent=contact" onClick={handleLinkClick} className="text-white text-xl font-semibold hover:text-white/80 transition-colors">Contact</Link>
                       
                       <Link 
                         to="/trust" 

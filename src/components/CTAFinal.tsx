@@ -105,7 +105,7 @@ export function CTAFinal({ backgroundImage }: CTAFinalProps) {
               e.currentTarget.style.color = '#E03694';
             }}
             onClick={() => {
-              window.location.href = '/volunteer';
+              window.location.href = '/intake?intent=volunteer';
             }}
           >
             Volunteer or Partner

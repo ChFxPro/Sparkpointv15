@@ -194,6 +194,137 @@ Submitted: ${new Date().toLocaleString()}
   }
 });
 
+// Intake Form Submission - Unified Route
+app.post("/make-server-535d8907/intake", async (c) => {
+  try {
+    const body = await c.req.json();
+    const { 
+      intent, 
+      name, 
+      email, 
+      phone, 
+      message, 
+      source_path,
+      // Volunteer specific
+      interests, 
+      availability,
+      // Partner specific
+      organization, 
+      partnershipDetails 
+    } = body;
+
+    // Validate required shared fields
+    if (!name || !email || !intent) {
+      return c.json({ error: "Name, email, and intent are required" }, 400);
+    }
+
+    // Validate intent
+    const validIntents = ['volunteer', 'partner', 'contact'];
+    if (!validIntents.includes(intent)) {
+      return c.json({ error: "Invalid intent" }, 400);
+    }
+
+    // Generate ID
+    const submissionId = `intake_${intent}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
+    // Construct data object based on intent to avoid storing irrelevant fields
+    const submissionData = {
+      id: submissionId,
+      intent,
+      name,
+      email,
+      phone: phone || '',
+      message: message || '',
+      source_path: source_path || '',
+      submittedAt: new Date().toISOString(),
+      status: 'new'
+    };
+
+    // Add intent-specific fields
+    if (intent === 'volunteer') {
+      submissionData.interests = Array.isArray(interests) ? interests : [];
+      submissionData.availability = availability || '';
+    } else if (intent === 'partner') {
+      submissionData.organization = organization || '';
+      submissionData.partnershipDetails = partnershipDetails || '';
+    }
+
+    // Store in KV
+    await kv.set(submissionId, submissionData);
+
+    // Send email notification via Resend (reusing existing logic if available, or just logging)
+    // Using the same structure as the existing /volunteer endpoint for consistency
+    try {
+      let emailSubject = `New Inquiry from ${name}`;
+      if (intent === 'volunteer') emailSubject = `New Volunteer Application from ${name}`;
+      if (intent === 'partner') emailSubject = `New Partnership Inquiry from ${name}`;
+      if (intent === 'contact') emailSubject = `New Contact Request from ${name}`;
+
+      let specificDetails = '';
+      if (intent === 'volunteer') {
+        specificDetails = `
+Interests: ${submissionData.interests.join(', ') || 'None selected'}
+Availability: ${submissionData.availability || 'Not provided'}
+        `;
+      } else if (intent === 'partner') {
+        specificDetails = `
+Organization: ${submissionData.organization || 'Not provided'}
+Partnership Details: ${submissionData.partnershipDetails || 'Not provided'}
+        `;
+      }
+
+      const emailBody = `
+${emailSubject}
+
+Name: ${name}
+Email: ${email}
+Phone: ${phone || 'Not provided'}
+Source: ${source_path || 'Unknown'}
+
+${specificDetails}
+
+Message:
+${message || 'No message provided'}
+
+Submitted: ${new Date().toLocaleString()}
+      `.trim();
+
+      const emailResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`,
+        },
+        body: JSON.stringify({
+          from: 'SparkPoint Intake <noreply@yoursparkpoint.org>',
+          to: ['info@yoursparkpoint.org'],
+          subject: emailSubject,
+          text: emailBody,
+        }),
+      });
+
+      if (!emailResponse.ok) {
+        console.error('Email sending error:', await emailResponse.text());
+      }
+    } catch (emailError) {
+      console.error('Error sending email notification:', emailError);
+    }
+
+    return c.json({ 
+      success: true, 
+      message: "Form submitted successfully",
+      submissionId 
+    });
+
+  } catch (error) {
+    console.error('Error processing intake form:', error);
+    return c.json({ 
+      error: "Failed to process form submission",
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500);
+  }
+});
+
 // Catch-all route for debugging
 app.all("*", (c) => {
   console.log(`❌ Unmatched route: ${c.req.method} ${c.req.url}`);
@@ -205,7 +336,8 @@ app.all("*", (c) => {
       "GET /make-server-535d8907/health",
       "POST /make-server-535d8907/impact/init",
       "GET /make-server-535d8907/impact/metrics",
-      "POST /make-server-535d8907/volunteer"
+      "POST /make-server-535d8907/volunteer",
+      "POST /make-server-535d8907/intake"
     ]
   }, 404);
 });

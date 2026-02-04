@@ -135,200 +135,216 @@ export function Hero({ heroImage }: HeroProps) {
       >
         {/* SparkPoint Logo */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.45, 0, 0.55, 1] }}
           style={{ 
             y: prefersReducedMotion ? 0 : logoY,
             opacity: prefersReducedMotion ? 1 : contentOpacity
           }}
-          className="mb-8 md:mb-12 flex justify-center"
         >
-          <img 
-            src={sparkPointLogo} 
-            alt="SparkPoint Logo" 
-            className="h-20 md:h-32 lg:h-40 w-auto" // Adjusted mobile height
-            style={{
-              filter: 'drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.2))'
-            }}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.45, 0, 0.55, 1] }}
+            className="mb-8 md:mb-12 flex justify-center"
+          >
+            <img 
+              src={sparkPointLogo} 
+              alt="SparkPoint Logo" 
+              className="h-20 md:h-32 lg:h-40 w-auto" // Adjusted mobile height
+              style={{
+                filter: 'drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.2))'
+              }}
+            />
+          </motion.div>
         </motion.div>
 
         {/* Animated Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.45, 0, 0.55, 1] }}
+        <motion.div
           style={{
-            fontFamily: '"Manrope", sans-serif',
-            fontSize: 'clamp(2.5rem, 7vw, 4.625rem)', // Reduced min size for mobile
-            fontWeight: 800,
-            lineHeight: '1.15',
-            letterSpacing: '-0.02em', // Adjusted letter spacing
-            textShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '0.25rem',
             y: prefersReducedMotion ? 0 : headlineY,
             opacity: prefersReducedMotion ? 1 : contentOpacity
           }}
-          className="text-white mb-6 px-4"
         >
-          {/* Animated Prefix */}
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={currentPhraseIndex}
-              initial={{ opacity: 0, y: -12, filter: 'blur(10px)', scale: 1.02 }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
-              exit={{ opacity: 0, y: 12, filter: 'blur(10px)', scale: 1.02 }}
-              transition={{ 
-                duration: 0.5, 
-                ease: [0.4, 0, 0.2, 1]
-              }}
-              style={{ 
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.45, 0, 0.55, 1] }}
+            style={{
+              fontFamily: '"Manrope", sans-serif',
+              fontSize: 'clamp(2.5rem, 7vw, 4.625rem)', // Reduced min size for mobile
+              fontWeight: 800,
+              lineHeight: '1.15',
+              letterSpacing: '-0.02em', // Adjusted letter spacing
+              textShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.25rem',
+            }}
+            className="text-white mb-6 px-4"
+          >
+            {/* Animated Prefix */}
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentPhraseIndex}
+                initial={{ opacity: 0, y: -12, filter: 'blur(10px)', scale: 1.02 }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
+                exit={{ opacity: 0, y: 12, filter: 'blur(10px)', scale: 1.02 }}
+                transition={{ 
+                  duration: 0.5, 
+                  ease: [0.4, 0, 0.2, 1]
+                }}
+                style={{ 
+                  display: 'block',
+                  textAlign: 'center'
+                }}
+              >
+                {phrases[currentPhraseIndex]}
+              </motion.span>
+            </AnimatePresence>
+            
+            {/* Static Connection with Gradient Overlay */}
+            <span
+              style={{
                 display: 'block',
+                position: 'relative',
+                color: 'white',
                 textAlign: 'center'
               }}
             >
-              {phrases[currentPhraseIndex]}
-            </motion.span>
-          </AnimatePresence>
-          
-          {/* Static Connection with Gradient Overlay */}
-          <span
-            style={{
-              display: 'block',
-              position: 'relative',
-              color: 'white',
-              textAlign: 'center'
-            }}
-          >
-            <motion.span
-              animate={{
-                opacity: [0.95, 1, 0.95],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-              style={{ display: 'inline-block' }}
-            >
-              Connection
-            </motion.span>
-            <motion.span
-              animate={{
-                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                background: 'linear-gradient(90deg, rgba(253, 181, 21, 0.5) 0%, rgba(224, 54, 148, 0.5) 50%, rgba(253, 181, 21, 0.5) 100%)',
-                backgroundSize: '200% 100%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                display: 'inline-block',
-                mixBlendMode: 'overlay',
-                pointerEvents: 'none'
-              }}
-              aria-hidden="true"
-            >
-              Connection
-            </motion.span>
-          </span>
-        </motion.h1>
+              <motion.span
+                animate={{
+                  opacity: [0.95, 1, 0.95],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                style={{ display: 'inline-block' }}
+              >
+                Connection
+              </motion.span>
+              <motion.span
+                animate={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                }}
+                transition={{
+                  duration: 10,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  background: 'linear-gradient(90deg, rgba(253, 181, 21, 0.5) 0%, rgba(224, 54, 148, 0.5) 50%, rgba(253, 181, 21, 0.5) 100%)',
+                  backgroundSize: '200% 100%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  display: 'inline-block',
+                  mixBlendMode: 'overlay',
+                  pointerEvents: 'none'
+                }}
+                aria-hidden="true"
+              >
+                Connection
+              </motion.span>
+            </span>
+          </motion.h1>
+        </motion.div>
 
         {/* Mission Statement */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.45, 0, 0.55, 1] }}
-          className="text-white/90 mb-12 max-w-3xl mx-auto px-4"
-          style={{
-            fontSize: 'clamp(1rem, 2vw, 1.5rem)', // Reduced min size slightly
-            lineHeight: '1.6',
-            textShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
-            maxWidth: '780px',
-            y: prefersReducedMotion ? 0 : subheadY,
-            opacity: prefersReducedMotion ? 1 : contentOpacity
-          }}
+        <motion.div
+           style={{
+             y: prefersReducedMotion ? 0 : subheadY,
+             opacity: prefersReducedMotion ? 1 : contentOpacity
+           }}
         >
-          Together, we build a stronger, more connected Transylvania County and Western North Carolina.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.45, 0, 0.55, 1] }}
+            className="text-white/90 mb-12 max-w-3xl mx-auto px-4"
+            style={{
+              fontSize: 'clamp(1rem, 2vw, 1.5rem)', // Reduced min size slightly
+              lineHeight: '1.6',
+              textShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
+              maxWidth: '780px',
+            }}
+          >
+            Together, we build a stronger, more connected Transylvania County and Western North Carolina.
+          </motion.p>
+        </motion.div>
 
         {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ 
-            opacity: showButtons ? 1 : 0, 
-            y: showButtons ? 0 : 30 
-          }}
-          transition={{ duration: 0.3, ease: [0.45, 0, 0.55, 1] }}
           style={{
             y: prefersReducedMotion ? 0 : buttonsY,
             opacity: prefersReducedMotion ? (showButtons ? 1 : 0) : contentOpacity
           }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center" // Mobile: column, stretch items
         >
-          <Button
-            size="lg"
-            className="px-8 py-6 text-lg transition-all duration-250 hover:brightness-105 w-full sm:w-auto" // Full width on mobile
-            onClick={() => navigate('/get-involved')}
-            style={{
-              backgroundColor: '#E03694',
-              color: 'white',
-              minHeight: '44px', // Ensure accessible tap target
-              transform: 'translateZ(0)',
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ 
+              opacity: showButtons ? 1 : 0, 
+              y: showButtons ? 0 : 30 
             }}
-            onMouseEnter={(e) => {
-              if (window.innerWidth >= 640) { // Only expand on non-mobile
-                e.currentTarget.style.width = `${e.currentTarget.offsetWidth + 4}px`;
-              }
-              e.currentTarget.style.backgroundColor = '#FDB515';
-            }}
-            onMouseLeave={(e) => {
-              if (window.innerWidth >= 640) {
-                 e.currentTarget.style.width = 'auto';
-              }
-              e.currentTarget.style.backgroundColor = '#E03694';
-            }}
+            transition={{ duration: 0.3, ease: [0.45, 0, 0.55, 1] }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center" // Mobile: column, stretch items
           >
-            Get Involved
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="px-8 py-6 text-lg border-2 transition-all duration-250 hover:brightness-105 w-full sm:w-auto" // Full width on mobile
-            onClick={() => navigate('/about')}
-            style={{
-              borderColor: 'white',
-              color: 'white',
-              backgroundColor: 'transparent',
-              minHeight: '44px',
-              transform: 'translateZ(0)',
-            }}
-            onMouseEnter={(e) => {
-               if (window.innerWidth >= 640) {
-                 e.currentTarget.style.width = `${e.currentTarget.offsetWidth + 4}px`;
-               }
-            }}
-            onMouseLeave={(e) => {
-               if (window.innerWidth >= 640) {
-                 e.currentTarget.style.width = 'auto';
-               }
-            }}
-          >
-            Learn More
-          </Button>
+            <Button
+              size="lg"
+              className="px-8 py-6 text-lg transition-all duration-250 hover:brightness-105 w-full sm:w-auto" // Full width on mobile
+              onClick={() => navigate('/get-involved')}
+              style={{
+                backgroundColor: '#E03694',
+                color: 'white',
+                minHeight: '44px', // Ensure accessible tap target
+                transform: 'translateZ(0)',
+              }}
+              onMouseEnter={(e) => {
+                if (window.innerWidth >= 640) { // Only expand on non-mobile
+                  e.currentTarget.style.width = `${e.currentTarget.offsetWidth + 4}px`;
+                }
+                e.currentTarget.style.backgroundColor = '#FDB515';
+              }}
+              onMouseLeave={(e) => {
+                if (window.innerWidth >= 640) {
+                   e.currentTarget.style.width = 'auto';
+                }
+                e.currentTarget.style.backgroundColor = '#E03694';
+              }}
+            >
+              Get Involved
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="px-8 py-6 text-lg border-2 transition-all duration-250 hover:brightness-105 w-full sm:w-auto" // Full width on mobile
+              onClick={() => navigate('/about')}
+              style={{
+                borderColor: 'white',
+                color: 'white',
+                backgroundColor: 'transparent',
+                minHeight: '44px',
+                transform: 'translateZ(0)',
+              }}
+              onMouseEnter={(e) => {
+                 if (window.innerWidth >= 640) {
+                   e.currentTarget.style.width = `${e.currentTarget.offsetWidth + 4}px`;
+                 }
+              }}
+              onMouseLeave={(e) => {
+                 if (window.innerWidth >= 640) {
+                   e.currentTarget.style.width = 'auto';
+                 }
+              }}
+            >
+              Learn More
+            </Button>
+          </motion.div>
         </motion.div>
       </motion.div>
     </section>

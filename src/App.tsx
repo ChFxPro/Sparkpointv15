@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Header } from './components/Header';
@@ -12,11 +12,12 @@ import { StoryArticlePage } from './pages/StoryArticlePage';
 import { ImpactPage } from './pages/ImpactPage';
 import { GetInvolvedPage } from './pages/GetInvolvedPage';
 import { AboutPage } from './pages/AboutPage';
-import { ContactPage } from './pages/ContactPage';
-import { VolunteerPage } from './pages/VolunteerPage';
+import { ContactPage } from './pages/ContactPage'; // Keeping for reference or fallback? Probably unused now.
+import { VolunteerPage } from './pages/VolunteerPage'; // Unused now.
+import { IntakePage } from './pages/IntakePage';
 import { TrustPage } from './pages/TrustPage';
 import { PrivacyPage } from './pages/PrivacyPage';
-import { AccessibilityProvider, useAccessibility } from './context/AccessibilityContext';
+import { AccessibilityProvider } from './context/AccessibilityContext';
 import { MotionConfig } from 'motion/react';
 
 // GitHub Pages SPA redirect handler
@@ -44,16 +45,8 @@ function ScrollToTop() {
 }
 
 function AppContent() {
-  const { motionPreference } = useAccessibility();
-  
-  // Explicitly map preference to MotionConfig's expected values
-  const reducedMotionValue: "user" | "always" | "never" = 
-    motionPreference === 'reduce' ? 'always' :
-    motionPreference === 'no-preference' ? 'never' :
-    'user';
-
   return (
-    <MotionConfig reducedMotion={reducedMotionValue}>
+    <MotionConfig reducedMotion="user">
       <div className="min-h-screen relative flex flex-col">
         <ScrollToTop />
         <a 
@@ -73,9 +66,11 @@ function AppContent() {
             <Route path="/stories/:categoryId/:slug" element={<StoryArticlePage />} />
             <Route path="/impact" element={<ImpactPage />} />
             <Route path="/get-involved" element={<GetInvolvedPage />} />
-            <Route path="/volunteer" element={<VolunteerPage />} />
+            <Route path="/volunteer" element={<Navigate to="/intake?intent=volunteer" replace />} />
+            <Route path="/partner" element={<Navigate to="/intake?intent=partner" replace />} />
+            <Route path="/contact" element={<Navigate to="/intake?intent=contact" replace />} />
+            <Route path="/intake" element={<IntakePage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
             <Route path="/trust" element={<TrustPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="*" element={<HomePage />} />

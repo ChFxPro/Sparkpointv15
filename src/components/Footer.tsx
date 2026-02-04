@@ -38,7 +38,7 @@ const quickLinks = [
   { label: 'Impact', href: '/impact' },
   { label: 'Get Involved', href: '/get-involved', highlighted: true },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Contact', href: '/intake?intent=contact' },
 ];
 
 const socialLinks = [
@@ -315,7 +315,7 @@ export function Footer() {
                 </p>
                 
                 <div className="space-y-3">
-                  <Link to="/contact">
+                  <Link to="/intake?intent=contact">
                     <Button
                       className="w-full py-6 transition-all duration-250 font-semibold"
                       style={{
