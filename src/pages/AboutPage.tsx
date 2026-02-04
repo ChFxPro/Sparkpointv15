@@ -304,7 +304,7 @@ export function AboutPage() {
       </section>
 
       {/* 2. Our Story — Narrative First (Dark Theme) */}
-      <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-b from-[#0a0a0a] via-[#111111] to-[#0a0a0a]">
+      <section className="py-20 md:py-32 px-6 relative overflow-hidden bg-gradient-to-b from-[#0a0a0a] via-[#111111] to-[#0a0a0a]">
         {/* Subtle Texture: Topographic/Organic Lines (Extremely Low Contrast) */}
         <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none select-none">
           <svg className="w-full h-full" viewBox="0 0 1440 1200" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -107,13 +107,13 @@ export function ContactPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <Card className="p-8 md:p-12 bg-white border-none shadow-xl shadow-stone-200/50 rounded-3xl overflow-hidden relative">
+              <Card className="p-6 md:p-12 bg-white border-none shadow-xl shadow-stone-200/50 rounded-3xl overflow-hidden relative">
                  {/* Decorative top accent */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#E03694] to-[#9E509F] opacity-20" />
                 
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-[#1A1A1A] mb-2">Send Us a Message</h2>
-                  <p className="text-[#666666] text-lg">Every message is read by a real person.</p>
+                <div className="mb-6 md:mb-8">
+                  <h2 className="text-xl md:text-2xl font-bold text-[#1A1A1A] mb-2">Send Us a Message</h2>
+                  <p className="text-[#666666] text-base md:text-lg">Every message is read by a real person.</p>
                 </div>
 
                 {isSubmitted ? (

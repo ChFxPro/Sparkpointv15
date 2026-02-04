@@ -125,7 +125,7 @@ export function VolunteerPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Helmet>
         <title>Volunteer | SparkPoint</title>
         <meta name="description" content="Join our community of dedicated volunteers making a real difference." />

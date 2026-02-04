@@ -2,11 +2,13 @@
 
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import { TrendingUp, Users, Heart, Award, Calendar, FileText, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
+import { useAccessibility } from '../context/AccessibilityContext';
 import communityMomentImg from 'figma:asset/c468599141a487a1168ff53b1f6de665f3b4be9d.png';
+import heleneIcon from 'figma:asset/3c1537cde524e7172c827aa2411c2c759ae68ece.png';
 
 const impactMetrics = [
   {
@@ -47,6 +49,9 @@ function Counter({ target, duration = 2000 }: { target: number; duration?: numbe
   const [count, setCount] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
+  const systemReducedMotion = useReducedMotion();
+  const { motionPreference } = useAccessibility();
+  const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -67,6 +72,11 @@ function Counter({ target, duration = 2000 }: { target: number; duration?: numbe
 
   useEffect(() => {
     if (!hasStarted) return;
+    
+    if (prefersReducedMotion) {
+       setCount(target);
+       return;
+    }
 
     const startTime = Date.now();
     const endTime = startTime + duration;
@@ -92,23 +102,23 @@ function Counter({ target, duration = 2000 }: { target: number; duration?: numbe
 
 export function ImpactPage() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
+  const { scrollY } = useScroll();
+  const systemReducedMotion = useReducedMotion();
+  const { motionPreference } = useAccessibility();
+  const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
   
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const heroScale = useTransform(scrollY, [0, 400], [1, 0.95]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Helmet>
         <title>Our Impact | SparkPoint</title>
         <meta name="description" content="How SparkPoint supports well-being, resilience, and collaboration." />
         <link rel="canonical" href="https://chfxpro.github.io/sparkpointv15/impact" />
       </Helmet>
       {/* Enhanced Hero Section */}
-      <section ref={heroRef} className="relative pt-32 pb-24 px-6 overflow-hidden">
+      <section ref={heroRef} className="relative pt-24 pb-12 md:pt-32 md:pb-24 px-6 overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 z-0">
           <div 
@@ -120,7 +130,7 @@ export function ImpactPage() {
           
           {/* Floating Gradient Orbs */}
           <motion.div
-            animate={{ 
+            animate={prefersReducedMotion ? {} : { 
               x: [0, 30, 0],
               y: [0, -20, 0],
               scale: [1, 1.1, 1]
@@ -138,7 +148,7 @@ export function ImpactPage() {
             }}
           />
           <motion.div
-            animate={{ 
+            animate={prefersReducedMotion ? {} : { 
               x: [0, -40, 0],
               y: [0, 30, 0],
               scale: [1, 1.2, 1]
@@ -156,7 +166,7 @@ export function ImpactPage() {
             }}
           />
           <motion.div
-            animate={{ 
+            animate={prefersReducedMotion ? {} : { 
               x: [0, 20, 0],
               y: [0, -30, 0],
               scale: [1, 1.15, 1]
@@ -216,12 +226,12 @@ export function ImpactPage() {
             </motion.div>
             
             <h1
-              className="mb-8"
+              className="mb-6 md:mb-8"
               style={{ 
                 color: '#1A1A1A', 
-                fontSize: '5rem', 
+                fontSize: 'clamp(3rem, 10vw, 5rem)', // Responsive font size
                 lineHeight: '1', 
-                letterSpacing: '-3px',
+                letterSpacing: '-0.02em',
                 background: 'linear-gradient(135deg, #1A1A1A 0%, #666666 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -234,7 +244,7 @@ export function ImpactPage() {
               className="max-w-3xl mx-auto mb-12"
               style={{ 
                 color: '#666666', 
-                fontSize: '1.5rem', 
+                fontSize: 'clamp(1.125rem, 4vw, 1.5rem)', // Responsive font size
                 lineHeight: '1.6' 
               }}
             >
@@ -269,7 +279,7 @@ export function ImpactPage() {
       </section>
 
       {/* Community Impact, at County Scale (Narrative Rewrite) */}
-      <section className="py-24 px-6 bg-white relative overflow-hidden">
+      <section className="py-12 md:py-24 px-6 bg-white relative overflow-hidden">
         {/* Narrative Flow Container */}
         <div className="max-w-4xl mx-auto relative z-10">
           
@@ -279,18 +289,18 @@ export function ImpactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="mb-24 text-center md:text-left"
+            className="mb-16 md:mb-24 text-center md:text-left"
           >
-             <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-8 leading-tight">
+             <h2 className="text-3xl md:text-6xl font-bold text-slate-900 mb-6 md:mb-8 leading-tight">
   SparkPoint was present in the community{" "}
   <span className="text-[#E03694]">week after week</span> in 2025.
 </h2>
 
-              <p className="text-xl md:text-2xl text-slate-600 mb-12 leading-relaxed max-w-3xl">
+              <p className="text-lg md:text-2xl text-slate-600 mb-8 md:mb-12 leading-relaxed max-w-3xl">
                   Trust isn’t built in moments. It’s built in presence. In a rural county of ~33,000 people, sustained connection matters more than volume.
               </p>
               
-              <div className="flex flex-wrap gap-8 md:gap-16 border-t border-slate-100 pt-8 mb-8">
+              <div className="flex flex-col sm:flex-row gap-8 md:gap-16 border-t border-slate-100 pt-8 mb-8">
                   <div>
                       <div className="text-3xl font-bold text-slate-900">77+</div>
                       <div className="text-sm text-slate-500">Total Events & Sessions</div>
@@ -341,14 +351,14 @@ export function ImpactPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="mb-32 relative pl-8 border-l-4 border-slate-200"
+            className="mb-20 md:mb-32 relative pl-6 md:pl-8 border-l-4 border-slate-200"
           >
               <div className="mb-4 text-sm font-bold tracking-widest text-slate-400 uppercase">Engagement Density</div>
-              <div className="text-5xl md:text-7xl font-bold text-[#9E509F] mb-4">
+              <div className="text-4xl md:text-7xl font-bold text-[#9E509F] mb-4">
                   4,187
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Verified Attendance Moments</h3>
-              <p className="text-lg text-slate-600 max-w-2xl">
+              <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-4">Verified Attendance Moments</h3>
+              <p className="text-base md:text-lg text-slate-600 max-w-2xl">
                   This number doesn't just represent reach—it represents <span className="font-semibold text-[#9E509F]">return</span>. 
                   It reflects repeated engagement, meaning people didn’t just come once—they came back.
               </p>
@@ -360,9 +370,9 @@ export function ImpactPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="mb-32"
+            className="mb-20 md:mb-32"
           >
-              <div className="bg-slate-50 rounded-3xl p-10 md:p-16 relative overflow-hidden">
+              <div className="bg-slate-50 rounded-3xl p-6 md:p-16 relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-[#FDB515] opacity-10 blur-3xl rounded-full pointer-events-none"></div>
                   
                   <h3 className="text-3xl font-bold text-slate-900 mb-6 relative z-10">
@@ -398,14 +408,14 @@ export function ImpactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="mb-32 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+            className="mb-20 md:mb-32 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center"
           >
               <div>
                   <div className="mb-4 text-sm font-bold tracking-widest text-[#F15F48] uppercase">Connector Work</div>
-                  <h3 className="text-3xl font-bold text-slate-900 mb-6">
+                  <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
                       Supporting the backbone of community.
                   </h3>
-                  <p className="text-lg text-slate-600 mb-6">
+                  <p className="text-base md:text-lg text-slate-600 mb-6">
                       For our 43+ adult and community events, SparkPoint often steps back—serving as the connector and facilitator so our partners can lead.
                   </p>
                   <ul className="space-y-3 text-slate-600">
@@ -423,9 +433,9 @@ export function ImpactPage() {
                       </li>
                   </ul>
               </div>
-              <div className="bg-[#FFF5F2] rounded-3xl p-10 flex items-center justify-center min-h-[240px]">
+              <div className="bg-[#FFF5F2] rounded-3xl p-6 md:p-10 flex items-center justify-center min-h-[200px] md:min-h-[240px]">
                    <div className="text-center">
-                      <div className="text-6xl font-bold text-[#F15F48] mb-2">43+</div>
+                      <div className="text-5xl md:text-6xl font-bold text-[#F15F48] mb-2">43+</div>
                       <div className="text-slate-600 font-medium">Community Events</div>
                    </div>
               </div>
@@ -463,9 +473,9 @@ export function ImpactPage() {
               
               <div className="space-y-6">
                   {[
-                    { title: "Juneteenth Festival", desc: "A celebration of shared history and community joy.", icon: "🎉" },
-                    { title: "Helene: One Year of Healing", desc: "Marking resilience and recovery together.", icon: "🌪️" },
-                    { title: "TCS Convocation", desc: "Aligning with educators for the year ahead.", icon: "🎓" }
+                    { title: "Juneteenth Festival", desc: "A celebration of shared history and community joy.", icon: <span className="text-2xl">🎉</span> },
+                    { title: "Helene: One Year of Healing", desc: "Marking resilience and recovery together.", icon: <img src={heleneIcon} alt="Helene Badge" className="w-10 h-10 object-contain" /> },
+                    { title: "TCS Convocation", desc: "Aligning with educators for the year ahead.", icon: <span className="text-2xl">🎓</span> }
                   ].map((event, i) => (
                     <motion.div 
                       key={i}
@@ -475,7 +485,7 @@ export function ImpactPage() {
                       transition={{ delay: i * 0.1 }}
                       className="flex items-center gap-6 p-6 rounded-2xl bg-white shadow-sm border border-slate-100 transition-transform hover:scale-[1.01]"
                     >
-                        <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-2xl border border-slate-100 flex-shrink-0">
+                        <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100 flex-shrink-0">
                           {event.icon}
                         </div>
                         <div>
@@ -545,7 +555,7 @@ export function ImpactPage() {
         <div className="absolute inset-0 z-0">
           {/* Animated Gradient Background */}
           <motion.div 
-            animate={{ 
+            animate={prefersReducedMotion ? {} : { 
               backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
             }}
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
@@ -582,14 +592,14 @@ export function ImpactPage() {
             
             <h2
               className="mb-6"
-              style={{ color: 'white', fontSize: '3.5rem', lineHeight: '1.1', letterSpacing: '-1px' }}
+              style={{ color: 'white', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', lineHeight: '1.1', letterSpacing: '-1px' }} // Responsive font size
             >
               Dive Deeper into Our Impact
             </h2>
             
             <p
               className="mb-12 max-w-3xl mx-auto"
-              style={{ color: 'rgba(255, 255, 255, 0.95)', fontSize: '1.375rem', lineHeight: '1.6' }}
+              style={{ color: 'rgba(255, 255, 255, 0.95)', fontSize: 'clamp(1.125rem, 2vw, 1.375rem)', lineHeight: '1.6' }}
             >
               Explore detailed annual reports with comprehensive data, stories, 
               and insights into how we're building a stronger community together.

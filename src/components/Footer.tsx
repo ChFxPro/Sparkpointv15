@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, Linkedin, Check } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, Check } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -12,6 +12,24 @@ import sparkMarkLogo from 'figma:asset/16ed15b2e7cab4039cf2d9fb007333306f37886c.
 import sparkPointLogo from 'figma:asset/35bb889d1f4d0b05ae6753439b58199640858447.png';
 import candidSeal from 'figma:asset/5a36f7b11c9d0bf970613a37a28b121b31918d77.png';
 import livingWageLogo from 'figma:asset/ec17a6fe91f3b0bf97249c7bd911f4723893563c.png';
+
+// Custom TikTok Icon to match Lucide style
+const TikTok = ({ size = 24, style }: { size?: number | string; style?: React.CSSProperties }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={style}
+  >
+    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+  </svg>
+);
 
 const quickLinks = [
   { label: 'Home', href: '/' },
@@ -27,7 +45,7 @@ const socialLinks = [
   { icon: Facebook, label: 'Follow SparkPoint on Facebook', href: 'https://www.facebook.com/yoursparkpoint' },
   { icon: Instagram, label: 'Follow SparkPoint on Instagram', href: 'https://www.instagram.com/yoursparkpoint' },
   { icon: Youtube, label: 'Subscribe to SparkPoint on YouTube', href: 'https://www.youtube.com/@sparkpoint2023' },
-  { icon: Linkedin, label: 'Connect with SparkPoint on LinkedIn', href: '#' },
+  { icon: TikTok, label: 'Follow SparkPoint on TikTok', href: 'https://www.tiktok.com/@sparkysparkpoint?_r=1&_t=ZP-93dyebP3yYR' },
 ];
 
 export function Footer() {
@@ -87,11 +105,13 @@ export function Footer() {
               transition={{ duration: 0.3, delay: 0.1, ease: 'easeOut' }}
               className="relative"
             >
-              <img 
-                src={sparkPointLogo} 
-                alt="SparkPoint" 
-                className="h-14 w-auto mb-6"
-              />
+              <div translate="no">
+                <img 
+                  src={sparkPointLogo} 
+                  alt="SparkPoint" 
+                  className="h-14 w-auto mb-6"
+                />
+              </div>
               <p
                 className="mb-2"
                 style={{
@@ -111,7 +131,7 @@ export function Footer() {
                   lineHeight: '1.5'
                 }}
               >
-                SparkPoint is a nonprofit built by our community, working toward a more connected and resilient Transylvania County.
+                <span translate="no">SparkPoint</span> is a nonprofit built by our community, working toward a more connected and resilient Transylvania County.
               </p>
 
               {/* Contact Details */}
@@ -419,11 +439,11 @@ export function Footer() {
                 letterSpacing: '0.25px',
               }}
             >
-              © 2025 SparkPoint. All rights reserved.
+              © 2025 <span translate="no">SparkPoint</span>. All rights reserved.
             </p>
             <div className="flex gap-6 flex-wrap justify-center">
-              <a
-                href="#"
+              <Link
+                to="/privacy"
                 className="transition-opacity hover:opacity-70"
                 style={{
                   color: 'rgba(255, 255, 255, 0.85)',
@@ -432,10 +452,10 @@ export function Footer() {
                 }}
               >
                 Privacy Policy
-              </a>
+              </Link>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>|</span>
-              <a
-                href="#"
+              <Link
+                to="/trust#site-use"
                 className="transition-opacity hover:opacity-70"
                 style={{
                   color: 'rgba(255, 255, 255, 0.85)',
@@ -444,10 +464,10 @@ export function Footer() {
                 }}
               >
                 Terms of Use
-              </a>
+              </Link>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>|</span>
-              <a
-                href="#"
+              <Link
+                to="/trust#accessibility"
                 className="transition-opacity hover:opacity-70"
                 style={{
                   color: 'rgba(255, 255, 255, 0.85)',
@@ -456,7 +476,7 @@ export function Footer() {
                 }}
               >
                 Accessibility
-              </a>
+              </Link>
             </div>
           </div>
         </div>

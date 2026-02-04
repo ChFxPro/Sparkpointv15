@@ -29,7 +29,7 @@ export function StoriesPage() {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-6 overflow-hidden">
+      <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-6 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={heroImage}
@@ -49,7 +49,7 @@ export function StoriesPage() {
               className="mb-6"
               style={{ 
                 color: '#1A1A1A', 
-                fontSize: '4rem', 
+                fontSize: 'clamp(2.5rem, 8vw, 4rem)', // Responsive font size
                 lineHeight: '1.1', 
                 letterSpacing: '-2px' 
               }}
@@ -60,7 +60,7 @@ export function StoriesPage() {
               className="max-w-2xl mx-auto mb-8"
               style={{ 
                 color: '#4A4A4A', 
-                fontSize: '1.25rem', 
+                fontSize: 'clamp(1.125rem, 3vw, 1.25rem)', 
                 lineHeight: '1.6' 
               }}
             >
@@ -75,14 +75,14 @@ export function StoriesPage() {
       </section>
 
       {/* Quote Section */}
-      <section className="py-24 px-6 bg-[#FDFDFD]">
+      <section className="py-12 md:py-24 px-6 bg-[#FDFDFD]">
         <div className="max-w-4xl mx-auto text-center">
           <motion.blockquote
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-3xl md:text-4xl font-bold text-[#1A1A1A] leading-tight tracking-tight"
+            className="text-2xl md:text-4xl font-bold text-[#1A1A1A] leading-tight tracking-tight"
           >
             “Community isn’t just where we live — it’s who we become together.”
           </motion.blockquote>
@@ -130,7 +130,7 @@ export function StoriesPage() {
                       )}
                     </div>
                     
-                    <div className={`${isEchoes ? 'p-8 md:p-12' : 'p-8'} flex flex-col flex-grow`}>
+                    <div className={`${isEchoes ? 'p-6 md:p-12' : 'p-6 md:p-8'} flex flex-col flex-grow`}>
                       {isEchoes && (
                         <p className="text-[#E03694] font-medium mb-3 text-sm tracking-wide uppercase">
                           A living weekly series from across the county
@@ -139,7 +139,7 @@ export function StoriesPage() {
                       
                       <h3
                         className="mb-4 font-bold text-gray-900"
-                        style={{ fontSize: isEchoes ? '2rem' : '1.5rem', lineHeight: '1.2' }}
+                        style={{ fontSize: isEchoes ? 'clamp(1.5rem, 4vw, 2rem)' : '1.5rem', lineHeight: '1.2' }}
                       >
                         {category.title}
                       </h3>
@@ -168,7 +168,7 @@ export function StoriesPage() {
       </section>
 
       {/* Share Your Story CTA */}
-      <section className="py-24 px-6 relative overflow-hidden bg-gray-50">
+      <section className="py-16 md:py-24 px-6 relative overflow-hidden bg-gray-50">
         <div className="absolute inset-0 z-0 opacity-30">
            <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#E03694] rounded-full blur-[100px]" />
            <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#FDB515] rounded-full blur-[80px]" />
@@ -184,12 +184,12 @@ export function StoriesPage() {
             <Heart size={40} className="text-[#E03694] mx-auto mb-6" />
             <h2
               className="mb-6 font-bold text-gray-900"
-              style={{ fontSize: '2.5rem', lineHeight: '1.2' }}
+              style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', lineHeight: '1.2' }}
             >
               Share Your Story
             </h2>
             <p
-              className="mb-10 text-gray-600 text-xl leading-relaxed"
+              className="mb-10 text-gray-600 text-lg md:text-xl leading-relaxed"
             >
               Your experience matters. Whether it's a moment of connection, a journey of healing, 
               or a story of hope — we'd love to hear from you and share it with our community.

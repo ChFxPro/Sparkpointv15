@@ -32,7 +32,7 @@ export function StoryCategoryPage() {
   const isFeaturedVideo = featuredArticle && !!featuredArticle.videoUrl;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen relative bg-[#FAFAFA]">
       <Helmet>
         <title>{`${category.title} | SparkPoint`}</title>
         <meta name="description" content={category.description} />

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import { StructuredData } from './components/StructuredData';
 import { HomePage } from './pages/HomePage';
 import { MissionPage } from './pages/MissionPage';
 import { StoriesPage } from './pages/StoriesPage';
@@ -14,6 +15,9 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { VolunteerPage } from './pages/VolunteerPage';
 import { TrustPage } from './pages/TrustPage';
+import { PrivacyPage } from './pages/PrivacyPage';
+import { AccessibilityProvider, useAccessibility } from './context/AccessibilityContext';
+import { MotionConfig } from 'motion/react';
 
 // GitHub Pages SPA redirect handler
 // This restores the original path after the 404.html redirect
@@ -33,41 +37,64 @@ function ScrollToTop() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.documentElement.lang = 'en';
   }, [pathname]);
 
   return null;
 }
 
 function AppContent() {
+  const { motionPreference } = useAccessibility();
+  
+  // Explicitly map preference to MotionConfig's expected values
+  const reducedMotionValue: "user" | "always" | "never" = 
+    motionPreference === 'reduce' ? 'always' :
+    motionPreference === 'no-preference' ? 'never' :
+    'user';
+
   return (
-    <div className="min-h-screen relative">
-      <ScrollToTop />
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/mission" element={<MissionPage />} />
-        <Route path="/stories" element={<StoriesPage />} />
-        <Route path="/stories/:categoryId" element={<StoryCategoryPage />} />
-        <Route path="/stories/:categoryId/:slug" element={<StoryArticlePage />} />
-        <Route path="/impact" element={<ImpactPage />} />
-        <Route path="/get-involved" element={<GetInvolvedPage />} />
-        <Route path="/volunteer" element={<VolunteerPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/trust" element={<TrustPage />} />
-        <Route path="*" element={<HomePage />} />
-      </Routes>
-      <Footer />
-    </div>
+    <MotionConfig reducedMotion={reducedMotionValue}>
+      <div className="min-h-screen relative flex flex-col">
+        <ScrollToTop />
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-6 py-3 bg-white text-[#E03694] font-bold rounded-lg shadow-lg border-2 border-[#E03694] transition-all"
+        >
+          Skip to main content
+        </a>
+        <Header />
+        <StructuredData />
+        <main id="main-content" className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/mission" element={<MissionPage />} />
+            <Route path="/stories" element={<StoriesPage />} />
+            <Route path="/stories/:categoryId" element={<StoryCategoryPage />} />
+            <Route path="/stories/:categoryId/:slug" element={<StoryArticlePage />} />
+            <Route path="/impact" element={<ImpactPage />} />
+            <Route path="/get-involved" element={<GetInvolvedPage />} />
+            <Route path="/volunteer" element={<VolunteerPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/trust" element={<TrustPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="*" element={<HomePage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </MotionConfig>
   );
 }
 
 export default function App() {
   return (
     <HelmetProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <AccessibilityProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AccessibilityProvider>
     </HelmetProvider>
   );
 }

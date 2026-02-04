@@ -70,7 +70,7 @@ export function GetInvolvedPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Helmet>
         <title>Get Involved | SparkPoint</title>
         <meta name="description" content="Ways to connect, participate, and collaborate with SparkPoint." />
@@ -102,7 +102,7 @@ export function GetInvolvedPage() {
               className="mb-6"
               style={{ 
                 color: 'white', 
-                fontSize: '4rem', 
+                fontSize: 'clamp(2.5rem, 8vw, 4rem)', 
                 lineHeight: '1.1', 
                 letterSpacing: '-2px' 
               }}
@@ -113,7 +113,7 @@ export function GetInvolvedPage() {
               className="max-w-3xl mx-auto"
               style={{ 
                 color: 'rgba(255, 255, 255, 0.95)', 
-                fontSize: '1.5rem', 
+                fontSize: 'clamp(1.125rem, 3vw, 1.5rem)', 
                 lineHeight: '1.6' 
               }}
             >
@@ -232,13 +232,13 @@ export function GetInvolvedPage() {
             <Mail size={48} style={{ color: 'white', margin: '0 auto 24px' }} />
             <h2
               className="mb-6"
-              style={{ color: 'white', fontSize: '3rem', lineHeight: '1.2' }}
+              style={{ color: 'white', fontSize: 'clamp(2rem, 5vw, 3rem)', lineHeight: '1.2' }}
             >
               Stay Connected
             </h2>
             <p
               className="mb-8"
-              style={{ color: 'rgba(255, 255, 255, 0.95)', fontSize: '1.25rem', lineHeight: '1.6' }}
+              style={{ color: 'rgba(255, 255, 255, 0.95)', fontSize: 'clamp(1rem, 2vw, 1.25rem)', lineHeight: '1.6' }}
             >
               Join our newsletter for updates on programs, events, stories, and opportunities to get involved.
             </p>
@@ -306,7 +306,7 @@ export function GetInvolvedPage() {
               className="mb-6"
               style={{ 
                 color: '#1A1A1A', 
-                fontSize: '2rem', 
+                fontSize: 'clamp(1.5rem, 4vw, 2rem)', 
                 lineHeight: '1.5',
                 fontStyle: 'italic'
               }}

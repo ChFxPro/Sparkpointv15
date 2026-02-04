@@ -4,6 +4,7 @@ import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform } fr
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { useState, useEffect, useRef } from 'react';
+import { useAccessibility } from '../context/AccessibilityContext';
 import sparkPointLogo from 'figma:asset/35bb889d1f4d0b05ae6753439b58199640858447.png';
 import mountainBackground from 'figma:asset/9cca1db07a8f8f3c2b4fe9b1989f3d9f9738c4c9.png';
 
@@ -13,24 +14,24 @@ interface HeroProps {
 
 export function Hero({ heroImage }: HeroProps) {
   const navigate = useNavigate();
-  const prefersReducedMotion = useReducedMotion();
+  const systemReducedMotion = useReducedMotion();
+  const { motionPreference } = useAccessibility();
+  
+  // Combine system preference with manual override
+  const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
+
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [showMission, setShowMission] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
 
   // Parallax scroll tracking
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
-
-  // Different parallax speeds for layered effect
-  const logoY = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const headlineY = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const subheadY = useTransform(scrollYProgress, [0, 1], [0, 250]);
-  const buttonsY = useTransform(scrollYProgress, [0, 1], [0, 300]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0]);
+  const { scrollY } = useScroll();
+  const logoY = useTransform(scrollY, [0, 800], [0, 150]);
+  const headlineY = useTransform(scrollY, [0, 800], [0, 200]);
+  const subheadY = useTransform(scrollY, [0, 800], [0, 250]);
+  const buttonsY = useTransform(scrollY, [0, 800], [0, 300]);
+  const contentOpacity = useTransform(scrollY, [0, 400, 800], [1, 0.5, 0]);
 
   const phrases = [
     'Healing through',
@@ -127,7 +128,7 @@ export function Hero({ heroImage }: HeroProps) {
       <motion.div 
         className="relative z-10 max-w-5xl mx-auto px-6 text-center" 
         style={{ 
-          paddingTop: '200px',
+          paddingTop: 'clamp(120px, 15vh, 200px)', // Responsive top padding
           opacity: prefersReducedMotion ? 1 : undefined
         }}
         aria-label="Rooted in Connection — SparkPoint strengthens Transylvania County by connecting people, programs, and purpose to build lasting wellness, resilience, and belonging, grounded in compassion and the belief that together we can weather any storm."
@@ -141,12 +142,12 @@ export function Hero({ heroImage }: HeroProps) {
             y: prefersReducedMotion ? 0 : logoY,
             opacity: prefersReducedMotion ? 1 : contentOpacity
           }}
-          className="mb-12 flex justify-center"
+          className="mb-8 md:mb-12 flex justify-center"
         >
           <img 
             src={sparkPointLogo} 
             alt="SparkPoint Logo" 
-            className="h-24 w-auto md:h-32 lg:h-40"
+            className="h-20 md:h-32 lg:h-40 w-auto" // Adjusted mobile height
             style={{
               filter: 'drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.2))'
             }}
@@ -160,10 +161,10 @@ export function Hero({ heroImage }: HeroProps) {
           transition={{ duration: 0.6, ease: [0.45, 0, 0.55, 1] }}
           style={{
             fontFamily: '"Manrope", sans-serif',
-            fontSize: 'clamp(3.25rem, 7vw, 4.625rem)',
+            fontSize: 'clamp(2.5rem, 7vw, 4.625rem)', // Reduced min size for mobile
             fontWeight: 800,
             lineHeight: '1.15',
-            letterSpacing: '-1.5px',
+            letterSpacing: '-0.02em', // Adjusted letter spacing
             textShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
             display: 'flex',
             flexDirection: 'column',
@@ -253,7 +254,7 @@ export function Hero({ heroImage }: HeroProps) {
           transition={{ duration: 0.6, delay: 0.2, ease: [0.45, 0, 0.55, 1] }}
           className="text-white/90 mb-12 max-w-3xl mx-auto px-4"
           style={{
-            fontSize: 'clamp(1.125rem, 2vw, 1.5rem)',
+            fontSize: 'clamp(1rem, 2vw, 1.5rem)', // Reduced min size slightly
             lineHeight: '1.6',
             textShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
             maxWidth: '780px',
@@ -276,24 +277,28 @@ export function Hero({ heroImage }: HeroProps) {
             y: prefersReducedMotion ? 0 : buttonsY,
             opacity: prefersReducedMotion ? (showButtons ? 1 : 0) : contentOpacity
           }}
-          className="flex gap-4 justify-center flex-wrap"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center" // Mobile: column, stretch items
         >
           <Button
             size="lg"
-            className="px-8 py-6 text-lg transition-all duration-250 hover:brightness-105"
+            className="px-8 py-6 text-lg transition-all duration-250 hover:brightness-105 w-full sm:w-auto" // Full width on mobile
             onClick={() => navigate('/get-involved')}
             style={{
               backgroundColor: '#E03694',
               color: 'white',
-              minHeight: '44px',
+              minHeight: '44px', // Ensure accessible tap target
               transform: 'translateZ(0)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.width = `${e.currentTarget.offsetWidth + 4}px`;
+              if (window.innerWidth >= 640) { // Only expand on non-mobile
+                e.currentTarget.style.width = `${e.currentTarget.offsetWidth + 4}px`;
+              }
               e.currentTarget.style.backgroundColor = '#FDB515';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.width = 'auto';
+              if (window.innerWidth >= 640) {
+                 e.currentTarget.style.width = 'auto';
+              }
               e.currentTarget.style.backgroundColor = '#E03694';
             }}
           >
@@ -302,7 +307,7 @@ export function Hero({ heroImage }: HeroProps) {
           <Button
             size="lg"
             variant="outline"
-            className="px-8 py-6 text-lg border-2 transition-all duration-250 hover:brightness-105"
+            className="px-8 py-6 text-lg border-2 transition-all duration-250 hover:brightness-105 w-full sm:w-auto" // Full width on mobile
             onClick={() => navigate('/about')}
             style={{
               borderColor: 'white',
@@ -312,10 +317,14 @@ export function Hero({ heroImage }: HeroProps) {
               transform: 'translateZ(0)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.width = `${e.currentTarget.offsetWidth + 4}px`;
+               if (window.innerWidth >= 640) {
+                 e.currentTarget.style.width = `${e.currentTarget.offsetWidth + 4}px`;
+               }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.width = 'auto';
+               if (window.innerWidth >= 640) {
+                 e.currentTarget.style.width = 'auto';
+               }
             }}
           >
             Learn More

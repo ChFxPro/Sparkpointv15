@@ -45,7 +45,7 @@ export function StoryArticlePage() {
 
   if (isVideoArticle) {
     return (
-      <div className="min-h-screen bg-[#FDFDFD]">
+      <div className="min-h-screen relative bg-[#FDFDFD]">
         {pageMeta}
         <article className="max-w-4xl mx-auto px-6 pt-32 pb-24">
           {/* Breadcrumbs */}
@@ -145,7 +145,7 @@ export function StoryArticlePage() {
 
   // Standard Article Layout
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen relative bg-white">
       {pageMeta}
       <article className="max-w-4xl mx-auto px-6 pt-32 pb-24">
         {/* Breadcrumbs */}

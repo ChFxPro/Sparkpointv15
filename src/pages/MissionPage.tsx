@@ -1,7 +1,7 @@
 'use client';
 
 import { Helmet } from 'react-helmet-async';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Heart, 
@@ -25,6 +25,7 @@ import {
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { useState, useRef, useEffect } from 'react';
+import { useAccessibility } from '../context/AccessibilityContext';
 import sparkPointIcon from 'figma:asset/046ca85659860578eeeab6a45f52700c54c519a3.png';
 import stickyBackground from 'figma:asset/c4e1406ca17d5d9941f67714b4ad381639235894.png';
 import learningImg from 'figma:asset/ce0a67a45092b4432ec7c00f4a17cb5a77e95a50.png';
@@ -126,6 +127,9 @@ const SECTORS_DATA: Sector[] = [
 // 1. Listen • Learn • Lead Diagram (Preserved)
 function ListenLearnLeadDiagram() {
   const [hoveredArc, setHoveredArc] = useState<string | null>(null);
+  const systemReducedMotion = useReducedMotion();
+  const { motionPreference } = useAccessibility();
+  const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
 
   // Configuration for the 3 Arcs
   const arcs = [
@@ -244,7 +248,7 @@ function ListenLearnLeadDiagram() {
                       stroke={arc.color}
                       strokeWidth={isHovered ? 2 : 1}
                       strokeDasharray="4 4"
-                      initial={{ pathLength: 0, opacity: 0 }}
+                      initial={{ pathLength: prefersReducedMotion ? 1 : 0, opacity: prefersReducedMotion ? 0.4 : 0 }}
                       whileInView={{ pathLength: 1, opacity: 0.4 }}
                       viewport={{ once: true }}
                       transition={{ duration: 1, delay: 0.5 }}
@@ -259,7 +263,7 @@ function ListenLearnLeadDiagram() {
                   stroke={arc.color}
                   strokeWidth="36"
                   strokeLinecap="round"
-                  initial={{ pathLength: 0, opacity: 0 }}
+                  initial={{ pathLength: prefersReducedMotion ? 1 : 0, opacity: prefersReducedMotion ? 1 : 0 }}
                   whileInView={{ pathLength: 1, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
@@ -417,23 +421,28 @@ function ListenLearnLeadDiagram() {
 function StackedAnchor() {
   const [wordIndex, setWordIndex] = useState(0);
   const words = ["Listening", "Learning", "Leading", "Strengthened"];
+  const systemReducedMotion = useReducedMotion();
+  const { motionPreference } = useAccessibility();
+  const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
   
   useEffect(() => {
-    // Only cycle if we haven't reached the last word
+    // Only cycle if we haven't reached the last word AND reduced motion is not active
+    if (prefersReducedMotion) return;
+
     if (wordIndex < words.length - 1) {
       const timer = setTimeout(() => {
         setWordIndex(prev => prev + 1);
       }, 1500); // Calm pacing: 1.5s per word
       return () => clearTimeout(timer);
     }
-  }, [wordIndex, words.length]);
+  }, [wordIndex, words.length, prefersReducedMotion]);
 
   const fontStyles = {
     fontFamily: '"Manrope", sans-serif',
-    fontSize: 'clamp(3.25rem, 7vw, 4.625rem)',
+    fontSize: 'clamp(2.5rem, 7vw, 4.625rem)', // Reduced min size
     fontWeight: 800,
     lineHeight: '1.15',
-    letterSpacing: '-1.5px',
+    letterSpacing: '-0.02em',
     textShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
   };
 
@@ -480,6 +489,9 @@ export function MissionPage() {
   const navigate = useNavigate();
   const [selectedSector, setSelectedSector] = useState<Sector | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const systemReducedMotion = useReducedMotion();
+  const { motionPreference } = useAccessibility();
+  const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
   
   // Scroll Parallax Hooks
   const { scrollY } = useScroll();
@@ -531,9 +543,9 @@ export function MissionPage() {
           <StackedAnchor />
           
           <div className="max-w-2xl mx-auto space-y-8 mb-12">
-            <p className="text-xl md:text-2xl text-white font-medium leading-relaxed">
+            <h1 className="text-xl md:text-2xl text-white font-medium leading-relaxed">
               SparkPoint fosters community well-being rooted in connection.
-            </p>
+            </h1>
 
             <p className="text-lg md:text-xl text-white/80 font-serif italic leading-relaxed font-light">
               We strengthen Transylvania County by aligning people and organizations around community voice—so resources are shared openly, trust grows, and our region becomes more resilient over time.
@@ -560,20 +572,20 @@ export function MissionPage() {
       </section>
 
       {/* 3. A Feedback Loop Rooted in Community (Listen. Learn. Lead.) - Semi-Transparent Dark */}
-      <section id="section-framework" className="relative z-10 py-28 px-4 bg-[#121214]/90 backdrop-blur-xl border-t border-white/5">
+      <section id="section-framework" className="relative z-10 py-16 md:py-28 px-4 bg-[#121214]/90 backdrop-blur-xl border-t border-white/5">
         <div className="max-w-6xl mx-auto">
            {/* Section Header */}
            <motion.div 
-             className="text-center mb-16 max-w-3xl mx-auto"
+             className="text-center mb-10 md:mb-16 max-w-3xl mx-auto"
              initial={{ opacity: 0, y: 30 }}
              whileInView={{ opacity: 1, y: 0 }}
              viewport={{ once: true }}
              transition={{ duration: 0.8 }}
            >
-              <h2 className="text-white text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+              <h2 className="text-white text-3xl md:text-5xl font-bold mb-4 md:mb-6 tracking-tight">
                 A Feedback Loop Rooted in Community
               </h2>
-              <p className="text-white/60 text-xl font-light mb-8">
+              <p className="text-white/60 text-lg md:text-xl font-light mb-6 md:mb-8">
                 How SparkPoint turns listening into action.
               </p>
               <div className="inline-block px-4 py-1 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-[#E03694] tracking-widest uppercase mb-4">
@@ -583,14 +595,94 @@ export function MissionPage() {
 
            {/* Diagram */}
            <motion.div 
-             className="relative rounded-[40px] bg-[#000000]/40 border border-white/10 shadow-2xl overflow-hidden p-6 md:p-10 mb-16"
+             className="relative rounded-[32px] md:rounded-[40px] bg-[#000000]/40 border border-white/10 shadow-2xl overflow-hidden p-6 md:p-10 mb-10 md:mb-16"
              initial={{ opacity: 0, scale: 0.98 }}
              whileInView={{ opacity: 1, scale: 1 }}
              viewport={{ once: true }}
              transition={{ duration: 0.8 }}
              style={{ boxShadow: '0 25px 60px rgba(0,0,0,0.5)' }}
            >
-              <ListenLearnLeadDiagram />
+              <div className="hidden md:block">
+                <ListenLearnLeadDiagram />
+              </div>
+
+              {/* Mobile-Specific Guided Sequence */}
+              <div className="md:hidden">
+                 <div className="flex flex-col relative">
+                    {/* Continuous Vertical Spine */}
+                    <div className="absolute left-8 top-16 bottom-10 w-0.5 bg-gradient-to-b from-[#FDB515] via-[#9E509F] to-[#F15F48] opacity-30" />
+                    
+                    {/* Connection Anchor */}
+                    <div className="flex items-center gap-5 mb-10 relative z-10">
+                       <div className="w-16 h-16 rounded-full bg-[#1A1A1A] border-2 border-[#E03694] flex flex-shrink-0 items-center justify-center shadow-[0_0_20px_rgba(224,54,148,0.3)] relative">
+                          <img src={sparkPointIcon} alt="" className="w-8 h-8 object-contain" />
+                       </div>
+                       <div>
+                          <h3 className="text-white font-bold text-lg uppercase tracking-widest">Connection</h3>
+                          <p className="text-white/60 text-sm mt-0.5">The engine that drives our work</p>
+                       </div>
+                    </div>
+
+                    {/* Phases */}
+                    {[
+                      {
+                        title: 'Listen',
+                        color: '#FDB515',
+                        items: [
+                          { icon: BarChart3, label: 'Community Research' },
+                          { icon: MessageCircle, label: 'Story Collection' }
+                        ]
+                      },
+                      {
+                        title: 'Learn',
+                        color: '#9E509F',
+                        items: [
+                          { icon: BookOpen, label: 'Community Education' },
+                          { icon: HeartHandshake, label: 'Leadership Programs' }
+                        ]
+                      },
+                      {
+                        title: 'Lead',
+                        color: '#F15F48',
+                        items: [
+                          { icon: Handshake, label: 'Collaborative Initiatives' },
+                          { icon: Home, label: 'Resilience Projects' }
+                        ]
+                      }
+                    ].map((phase, i) => (
+                       <div key={phase.title} className="relative pl-24 mb-8 last:mb-0">
+                          {/* Node on Spine */}
+                          <div 
+                            className="absolute left-8 top-6 w-4 h-4 -ml-[7px] rounded-full border-2 border-[#121214] z-10"
+                            style={{ backgroundColor: phase.color }} 
+                          />
+                          
+                          {/* Connector Line to Card */}
+                          <div 
+                             className="absolute left-8 top-8 w-16 h-[1px] opacity-30"
+                             style={{ backgroundColor: phase.color }}
+                          />
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 relative overflow-hidden">
+                              <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: phase.color }} />
+                              
+                              <h4 className="font-bold text-xl mb-3" style={{ color: phase.color }}>
+                                {phase.title}
+                              </h4>
+                              
+                              <div className="space-y-3">
+                                 {phase.items.map((item, idx) => (
+                                   <div key={idx} className="flex items-center gap-3 text-white/80">
+                                      <item.icon size={16} style={{ color: phase.color }} />
+                                      <span className="text-sm font-medium">{item.label}</span>
+                                   </div>
+                                 ))}
+                              </div>
+                          </div>
+                       </div>
+                    ))}
+                 </div>
+              </div>
            </motion.div>
 
            {/* 3 Columns Explaining The Loop */}
@@ -637,17 +729,17 @@ export function MissionPage() {
       </section>
 
       {/* 4. Mission in Practice - Semi-Transparent Light */}
-      <section id="section-practice" className="relative z-10 py-24 px-6 bg-[#FAFAFA]/80 backdrop-blur-xl border-t border-white/50">
+      <section id="section-practice" className="relative z-10 py-16 md:py-24 px-6 bg-[#FAFAFA]/80 backdrop-blur-xl border-t border-white/50">
         <div className="relative z-10 max-w-7xl mx-auto">
            {/* Header */}
            <motion.div
              initial={{ opacity: 0, y: 20 }}
              whileInView={{ opacity: 1, y: 0 }}
              viewport={{ once: true }}
-             className="text-center mb-16"
+             className="text-center mb-10 md:mb-16"
            >
-             <h2 className="text-gray-900 text-4xl md:text-5xl font-bold mb-6">What This Looks Like in Real Life</h2>
-             <p className="text-gray-600 text-xl max-w-3xl mx-auto leading-relaxed">
+             <h2 className="text-gray-900 text-3xl md:text-5xl font-bold mb-4 md:mb-6">What This Looks Like in Real Life</h2>
+             <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
                Connection becomes powerful when it turns into action. Here are a few ways SparkPoint shows up across the community.
              </p>
            </motion.div>
@@ -826,7 +918,7 @@ export function MissionPage() {
             />
             
             <motion.div
-              layoutId={`sector-${selectedSector.id}`}
+              layoutId={prefersReducedMotion ? undefined : `sector-${selectedSector.id}`}
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}

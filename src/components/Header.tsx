@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, useScroll, useMotionValueEvent } from 'motion/react';
-import { ChevronDown, Menu, X, Mail, Globe, Type, Shield } from 'lucide-react';
+import { ChevronDown, Menu, X, Mail, Accessibility, Shield, Check } from 'lucide-react';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from './ui/sheet';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import sparkPointLogo from 'figma:asset/35bb889d1f4d0b05ae6753439b58199640858447.png';
 
 interface DropdownItem {
@@ -33,7 +34,6 @@ export function Header() {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [language, setLanguage] = useState('EN');
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -86,6 +86,7 @@ export function Header() {
           <Link
             to="/"
             className="flex items-center transition-opacity hover:opacity-80 shrink-0"
+            translate="no"
           >
             <img
               src={sparkPointLogo}
@@ -154,19 +155,55 @@ export function Header() {
                 <Mail size={18} />
               </Button>
 
-              <button
-                onClick={() => setLanguage(language === 'EN' ? 'ES' : 'EN')}
-                className="w-9 h-9 flex items-center justify-center rounded-full text-gray-600 hover:text-[#E03694] hover:bg-[#E03694]/10 transition-colors font-bold text-xs"
-              >
-                {language}
-              </button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className="w-9 h-9 flex items-center justify-center rounded-full text-gray-600 hover:text-[#E03694] hover:bg-[#E03694]/10 transition-colors"
+                    aria-label="Accessibility"
+                  >
+                    <Accessibility size={18} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 p-5 bg-white border border-gray-100 shadow-xl rounded-xl">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-1">
+                       <Accessibility size={18} className="text-[#E03694]" />
+                       <h4 className="font-bold text-[#1A1A1A]">Accessibility</h4>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-2">
+                      Built to work with keyboard navigation and screen readers.
+                    </p>
+                    
+                    <ul className="space-y-2.5">
+                      {[
+                        'Keyboard navigation support',
+                        'Visible focus states',
+                        'Semantic headings & structure',
+                        'Screen-reader-friendly labels',
+                        'Reduced-motion support (System)'
+                      ].map((feature, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                          <Check size={14} className="mt-1 text-[#E03694] shrink-0" />
+                          <span className="leading-tight">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
 
-              <button
-                className="w-9 h-9 flex items-center justify-center rounded-full text-gray-600 hover:text-[#E03694] hover:bg-[#E03694]/10 transition-colors"
-                aria-label="Accessibility settings"
-              >
-                <Type size={18} />
-              </button>
+                    <div className="pt-3 border-t border-gray-100 mt-2">
+                      <h5 className="text-sm font-semibold text-gray-900 mb-1">Need help?</h5>
+                      <p className="text-xs text-gray-500 mb-2">
+                        If something isn’t accessible for you, we want to know.
+                      </p>
+                      <Link 
+                        to="/contact" 
+                        className="text-sm font-bold text-[#E03694] hover:underline inline-flex items-center gap-1"
+                      >
+                        Contact us
+                      </Link>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
 
             <Button
@@ -192,7 +229,7 @@ export function Header() {
         transition={{ duration: 0.3, ease: [0.45, 0, 0.55, 1] }}
         className="fixed top-0 left-0 right-0 z-50 lg:hidden"
         style={{
-          background: 'rgba(255, 255, 255, 0.25)',
+          background: 'rgba(255, 255, 255, 0.90)', // Increased opacity for better contrast
           backdropFilter: 'blur(20px)',
           boxShadow: isScrolled ? '0px 4px 8px rgba(0, 0, 0, 0.12), 0px 2px 0px rgba(224, 54, 148, 0.3)' : '0px 4px 8px rgba(0, 0, 0, 0.12)',
           borderBottom: isScrolled ? '2px solid rgba(224, 54, 148, 0.2)' : 'none',
@@ -202,7 +239,7 @@ export function Header() {
         <div className="px-6 h-20 flex items-center justify-between">
           <Link
             to="/"
-            className="flex items-center"
+            className="flex items-center min-h-[44px] min-w-[44px]" // Ensure touch target
             onClick={handleLinkClick}
           >
             <img
@@ -215,9 +252,10 @@ export function Header() {
           <Button
             variant="ghost"
             size="sm"
-            className="hover:bg-white/20"
+            className="hover:bg-black/5 min-h-[44px] min-w-[44px] flex items-center justify-center" // Ensure touch target
             style={{ color: '#E03694' }}
             onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
           >
             <Menu size={28} />
           </Button>
@@ -269,7 +307,7 @@ export function Header() {
                       <Link
                         to={item.href!}
                         onClick={handleLinkClick}
-                        className="block text-white py-2"
+                        className="block text-white py-4" // Increased tap target area
                         style={{ fontSize: '20px', fontWeight: '600' }}
                       >
                         {item.label}
@@ -315,14 +353,6 @@ export function Header() {
                       <Mail size={18} className="mr-2" />
                       Newsletter
                     </Button>
-
-                    <button
-                      onClick={() => setLanguage(language === 'EN' ? 'ES' : 'EN')}
-                      className="px-4 py-2 rounded-md text-white border-2 border-white hover:bg-white/10 transition-colors font-semibold text-sm"
-                    >
-                      <Globe size={18} className="inline mr-1" />
-                      {language}
-                    </button>
                   </div>
                 </div>
             </div>
@@ -367,7 +397,7 @@ export function Header() {
 
                  {/* Group 3: About & Trust */}
                  <div>
-                   <h3 className="text-white/60 text-xs font-bold uppercase tracking-widest mb-6">About SparkPoint</h3>
+                   <h3 className="text-white/60 text-xs font-bold uppercase tracking-widest mb-6">About <span translate="no">SparkPoint</span></h3>
                    <div className="grid gap-4">
                       <Link to="/about" onClick={handleLinkClick} className="text-white text-xl font-semibold hover:text-white/80 transition-colors">About Us</Link>
                       <Link to="/contact" onClick={handleLinkClick} className="text-white text-xl font-semibold hover:text-white/80 transition-colors">Contact</Link>

@@ -1,9 +1,10 @@
 'use client';
 
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAccessibility } from '../context/AccessibilityContext';
 
 interface Story {
   title: string;
@@ -17,14 +18,21 @@ interface StoryCarouselProps {
 
 export function StoryCarousel({ stories }: StoryCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const systemReducedMotion = useReducedMotion();
+  const { motionPreference } = useAccessibility();
+  
+  // Combine system preference with manual override
+  const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % stories.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [stories.length]);
+  }, [stories.length, prefersReducedMotion]);
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % stories.length);
@@ -35,7 +43,7 @@ export function StoryCarousel({ stories }: StoryCarouselProps) {
   };
 
   return (
-    <section id="stories" className="relative py-20 px-6 overflow-hidden">
+    <section id="stories" className="relative py-12 md:py-20 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
@@ -52,17 +60,17 @@ export function StoryCarousel({ stories }: StoryCarouselProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.45, 0, 0.55, 1] }}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
         >
           <h2
             className="mb-4"
-            style={{ color: '#1A1A1A', fontSize: '3rem', lineHeight: '1.2', letterSpacing: '-1px' }}
+            style={{ color: '#1A1A1A', fontSize: 'clamp(2rem, 5vw, 3rem)', lineHeight: '1.2', letterSpacing: '-1px' }}
           >
             Every story strengthens our community.
           </h2>
           <p
             className="max-w-3xl mx-auto"
-            style={{ color: '#666666', fontSize: '1.25rem', lineHeight: '1.5' }}
+            style={{ color: '#666666', fontSize: 'clamp(1rem, 2vw, 1.25rem)', lineHeight: '1.5' }}
           >
             Explore voices of recovery, resilience, and belonging — collected through local 
             storytelling and lived experience.
@@ -70,7 +78,7 @@ export function StoryCarousel({ stories }: StoryCarouselProps) {
         </motion.div>
 
         <div className="relative max-w-5xl mx-auto">
-          <div className="relative h-[600px] rounded-2xl overflow-hidden">
+          <div className="relative h-[450px] md:h-[600px] rounded-2xl overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -90,7 +98,7 @@ export function StoryCarousel({ stories }: StoryCarouselProps) {
                 <motion.div
                   className="absolute inset-0"
                   style={{
-                    background: 'linear-gradient(0deg, rgba(224, 54, 148, 0.75) 0%, rgba(224, 54, 148, 0.2) 50%, transparent 70%)'
+                    background: 'linear-gradient(0deg, rgba(224, 54, 148, 0.9) 0%, rgba(224, 54, 148, 0.2) 60%, transparent 80%)'
                   }}
                   animate={{
                     opacity: [0.9, 1, 0.9],
@@ -103,13 +111,13 @@ export function StoryCarousel({ stories }: StoryCarouselProps) {
                 />
 
                 {/* Story Info */}
-                <div className="absolute bottom-0 left-0 right-0 p-10 text-white">
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
                   <motion.h3
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="mb-3"
-                    style={{ fontSize: '2rem' }}
+                    className="mb-2 md:mb-3"
+                    style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}
                   >
                     {stories[currentIndex].title}
                   </motion.h3>
@@ -117,7 +125,7 @@ export function StoryCarousel({ stories }: StoryCarouselProps) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    style={{ fontSize: '1.125rem', lineHeight: '1.5' }}
+                    style={{ fontSize: 'clamp(1rem, 2vw, 1.125rem)', lineHeight: '1.5' }}
                   >
                     {stories[currentIndex].caption}
                   </motion.p>

@@ -6,7 +6,7 @@ import { motion } from 'motion/react';
 
 export function MissionGrid() {
   return (
-    <section id="mission" className="relative py-20 px-6 overflow-hidden">
+    <section id="mission" className="relative py-12 md:py-20 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
@@ -23,17 +23,17 @@ export function MissionGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.45, 0, 0.55, 1] }}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
         >
           <h2
             className="mb-4"
-            style={{ color: '#1A1A1A', fontSize: '3rem', lineHeight: '1.2', letterSpacing: '-1px' }}
+            style={{ color: '#1A1A1A', fontSize: 'clamp(2rem, 5vw, 3rem)', lineHeight: '1.2', letterSpacing: '-1px' }}
           >
             Connection becomes care, trust, and action.
           </h2>
           <p
             className="max-w-3xl mx-auto"
-            style={{ color: '#666666', fontSize: '1.25rem', lineHeight: '1.5' }}
+            style={{ color: '#666666', fontSize: 'clamp(1rem, 2vw, 1.25rem)', lineHeight: '1.5' }}
           >
             SparkPoint focuses on the connective work that makes community well-being possible — bringing people, organizations, and resources into alignment so meaningful support can take shape.
           </p>

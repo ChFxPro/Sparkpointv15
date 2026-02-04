@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { useAccessibility } from '../context/AccessibilityContext';
 
 interface GalleryItem {
   src: string;
@@ -13,6 +14,9 @@ interface TimelineGalleryProps {
 
 export function TimelineGallery({ images }: TimelineGalleryProps) {
   const [items, setItems] = useState(images);
+  const systemReducedMotion = useReducedMotion();
+  const { motionPreference } = useAccessibility();
+  const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
 
   const moveTopToBottom = () => {
     setItems((prev) => {
@@ -52,7 +56,7 @@ export function TimelineGallery({ images }: TimelineGalleryProps) {
             
             return (
               <motion.div
-                layout
+                layout={!prefersReducedMotion}
                 key={photo.src}
                 className="absolute w-full aspect-[4/3] bg-white p-2 shadow-md rounded-sm border border-gray-100 origin-center"
                 style={{
