@@ -1,13 +1,16 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
-  import { defineConfig } from 'vite';
-  import react from '@vitejs/plugin-react-swc';
-  import path from 'path';
+export default defineConfig({
+  // ✅ REQUIRED for GitHub Pages project sites:
+  // https://<user>.github.io/<repo>/
+  base: '/sparkpointv15/',
 
-  export default defineConfig({
-    plugins: [react()],
-    resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-      alias: {
+  plugins: [react()],
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
         'vaul@1.1.2': 'vaul',
         'sonner@2.0.3': 'sonner',
         'recharts@2.15.2': 'recharts',
