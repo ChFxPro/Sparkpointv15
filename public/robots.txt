@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chfxpro.github.io/sparkpointv15/sitemap.xml
