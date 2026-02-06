@@ -1,6 +1,6 @@
 {
-      "name": "SparkPoint V15",
-      "version": "0.1.0",
+      "name": "sparkpointv15",
+  "version": "0.1.0",
       "private": true,
       "dependencies": {
             "@jsr/supabase__supabase-js": "^2.49.8",
