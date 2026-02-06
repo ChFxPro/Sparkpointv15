@@ -1,24 +1,45 @@
 // SparkPoint Impact Dashboard API - Updated 2025
 import { Hono } from "npm:hono";
-import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import * as kv from "./kv_store.tsx";
 const app = new Hono();
 
+const allowedOrigins = new Set([
+  "https://chfxpro.github.io",
+  "http://localhost:3000",
+]);
+
+const getCorsHeaders = (req: Request) => {
+  const origin = req.headers.get("origin");
+  const allowOrigin = origin && allowedOrigins.has(origin)
+    ? origin
+    : "https://chfxpro.github.io";
+
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "apikey, authorization, content-type, x-client-info",
+    "Access-Control-Max-Age": "86400",
+    "Vary": "Origin",
+  };
+};
+
 // Enable logger
 app.use('*', logger(console.log));
 
-// Enable CORS for all routes and methods
-app.use(
-  "/*",
-  cors({
-    origin: "*",
-    allowHeaders: ["Content-Type", "Authorization"],
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    exposeHeaders: ["Content-Length"],
-    maxAge: 600,
-  }),
-);
+// CORS handling for all routes and methods
+app.use("*", async (c, next) => {
+  const corsHeaders = getCorsHeaders(c.req.raw);
+
+  if (c.req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  await next();
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    c.res.headers.set(key, value);
+  });
+});
 
 // Debug: Log all incoming requests
 app.use("*", async (c, next) => {
