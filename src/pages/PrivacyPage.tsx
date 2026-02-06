@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { ArrowLeft, Mail, Phone, Shield, Lock, EyeOff } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 export function PrivacyPage() {
   return (

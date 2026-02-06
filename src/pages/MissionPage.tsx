@@ -2,7 +2,7 @@
 
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'motion/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { 
   Heart, 
   Users, 

@@ -5,9 +5,10 @@ import { motion } from 'motion/react';
 import { Heart, Upload, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { STORIES_DATA } from '../data/stories';
 import heroImage from 'figma:asset/b7ea59b58a471ceacde60e41e5e3cd69fe78c66f.png';
+import imgPoster from "figma:asset/e3f8a2b021eb0d337580338dd10e709a1762494c.png";
 import { BehindTheStories } from '../components/BehindTheStories';
 
 export function StoriesPage() {
@@ -99,6 +100,17 @@ export function StoriesPage() {
             {sortedCategories.map((category, index) => {
               const isEchoes = category.id === 'community-voice';
               
+              // Override for Volunteer Impact to feature Helene Story
+              let title = category.title;
+              let description = category.description;
+              let image = category.image;
+              
+              if (category.id === 'volunteer-impact') {
+                title = "Helene: One Year of Healing";
+                description = "A community tribute film created from 140+ voices across Transylvania County.";
+                image = imgPoster;
+              }
+
               return (
                 <motion.div
                   key={category.id}
@@ -114,8 +126,8 @@ export function StoriesPage() {
                   >
                     <div className={`relative ${isEchoes ? '' : 'h-64'} overflow-hidden`}>
                       <img
-                        src={category.image}
-                        alt={category.title}
+                        src={image}
+                        alt={title}
                         className={`w-full ${isEchoes ? 'h-auto' : 'h-full object-cover'} transition-transform duration-1000 ease-out hover:scale-105`}
                       />
                       {/* Optional overlay for text readability if needed, but keeping it clean for now */}
@@ -141,14 +153,14 @@ export function StoriesPage() {
                         className="mb-4 font-bold text-gray-900"
                         style={{ fontSize: isEchoes ? 'clamp(1.5rem, 4vw, 2rem)' : '1.5rem', lineHeight: '1.2' }}
                       >
-                        {category.title}
+                        {title}
                       </h3>
                       
                       <p
                         className="flex-grow mb-8 text-gray-600"
                         style={{ fontSize: isEchoes ? '1.125rem' : '1rem', lineHeight: '1.6' }}
                       >
-                        {category.description}
+                        {description}
                       </p>
                       
                       <div className="mt-auto pt-4 border-t border-gray-100">

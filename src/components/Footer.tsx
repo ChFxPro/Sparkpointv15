@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, Check } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -413,6 +413,35 @@ export function Footer() {
                     className="h-[48px] w-auto object-contain"
                   />
                 </Link>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Charitable Solicitation Disclosure */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-12"
+          >
+            <div 
+              className="p-6 rounded-lg border border-white/20 bg-white/5"
+            >
+              <div 
+                style={{
+                  color: 'rgba(255, 255, 255, 0.95)',
+                  fontSize: '0.875rem',
+                  lineHeight: '1.6',
+                  textAlign: 'left',
+                }}
+              >
+                <p className="font-bold mb-2">
+                  Sustainable Health for All (est. 2020) is a registered 501(c)(3) – DBA: SparkPoint
+                </p>
+                <p>
+                  Financial information about this organization and a copy of its license are available from the State Solicitation Licensing Branch at 919-814-5400. The license is not an endorsement by the State.
+                </p>
               </div>
             </div>
           </motion.div>

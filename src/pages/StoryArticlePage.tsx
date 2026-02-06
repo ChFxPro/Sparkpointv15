@@ -1,7 +1,7 @@
 'use client';
 
 import { Helmet } from 'react-helmet-async';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { ArrowLeft, Share2, Printer, Calendar, User, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';

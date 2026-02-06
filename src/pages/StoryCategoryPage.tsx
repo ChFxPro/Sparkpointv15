@@ -1,13 +1,14 @@
 'use client';
 
 import { Helmet } from 'react-helmet-async';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router';
 import { motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, Calendar, Clock, Play } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { STORIES_DATA } from '../data/stories';
 import { useEffect } from 'react';
+import imgPoster from "figma:asset/e3f8a2b021eb0d337580338dd10e709a1762494c.png";
 
 export function StoryCategoryPage() {
   const { categoryId } = useParams();
@@ -26,10 +27,34 @@ export function StoryCategoryPage() {
     return <div className="min-h-screen pt-32 text-center">Category not found</div>;
   }
 
-  const articles = category.articles || [];
+  // Inject the new Helene article if we are in the Volunteer Impact (Community Champions) category
+  let articles = category.articles || [];
+  if (category.id === 'volunteer-impact') {
+    const heleneArticle = {
+      id: 'helene-anniversary',
+      slug: 'helene-anniversary',
+      title: 'Helene: One Year of Healing',
+      date: 'September 27, 2025',
+      excerpt: 'It started with a question: How do we honor a year of recovery without losing sight of the work that remains? The answer wasn’t in the programming. It was in the people who stood at the gates.',
+      image: imgPoster,
+      content: '', 
+      videoUrl: undefined
+    };
+    // Ensure we create a new array to avoid mutating the original data reference if we were modifying it directly (though slice handles that usually, this is safer)
+    articles = [heleneArticle, ...articles];
+  }
+
   const featuredArticle = articles[0]; // Most recent (first in array)
   const previousArticles = articles.slice(1);
   const isFeaturedVideo = featuredArticle && !!featuredArticle.videoUrl;
+
+  const handleArticleClick = (slug: string) => {
+    if (slug === 'helene-anniversary') {
+      navigate('/stories/community-champions/helene-anniversary');
+    } else {
+      navigate(`/stories/${category.id}/${slug}`);
+    }
+  };
 
   return (
     <div className="min-h-screen relative bg-[#FAFAFA]">
@@ -91,7 +116,7 @@ export function StoryCategoryPage() {
                    />
                    <div 
                      className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent cursor-pointer" 
-                     onClick={() => navigate(`/stories/${category.id}/${featuredArticle.slug}`)}
+                     onClick={() => handleArticleClick(featuredArticle.slug)}
                    />
                    {isFeaturedVideo && (
                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -113,7 +138,7 @@ export function StoryCategoryPage() {
                      {featuredArticle.excerpt}
                    </p>
                    <Button 
-                     onClick={() => navigate(`/stories/${category.id}/${featuredArticle.slug}`)}
+                     onClick={() => handleArticleClick(featuredArticle.slug)}
                      className="self-start bg-[#1A1A1A] hover:bg-[#E03694] text-white px-8 py-6 text-lg transition-colors inline-flex items-center gap-2"
                    >
                      {isFeaturedVideo ? (
@@ -146,7 +171,7 @@ export function StoryCategoryPage() {
                 <div 
                   key={article.id}
                   className="bg-white p-8 rounded-2xl border border-gray-100 hover:border-[#E03694]/30 hover:shadow-lg transition-all duration-300 group cursor-pointer"
-                  onClick={() => navigate(`/stories/${category.id}/${article.slug}`)}
+                  onClick={() => handleArticleClick(article.slug)}
                 >
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                     <div className="flex-1">

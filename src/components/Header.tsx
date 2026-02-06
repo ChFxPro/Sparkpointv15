@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { motion, useScroll, useMotionValueEvent } from 'motion/react';
 import { ChevronDown, Menu, X, Mail, Accessibility, Shield, Check } from 'lucide-react';
 import { Button } from './ui/button';
@@ -266,6 +266,7 @@ export function Header() {
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetContent
           side="right"
+          hideCloseButton
           className="w-full sm:w-[480px] p-0 border-0"
           style={{
             background: 'linear-gradient(180deg, rgba(224, 54, 148, 0.98) 0%, rgba(158, 80, 159, 0.98) 100%)',

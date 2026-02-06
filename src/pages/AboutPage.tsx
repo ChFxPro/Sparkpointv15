@@ -21,7 +21,7 @@ import interviewFilmingImage from 'figma:asset/183c96a680c45035b0835db81082bdb93
 import sparkPointCommonsImage from 'figma:asset/63f606372ec6e500e9a7547d300fb9f0d31dae7e.png';
 import mediaStudioImage from 'figma:asset/7c67e828e47be75e27ecc6de02db283be5ae7589.png';
 import { Button } from '../components/ui/button';
-import { TimelineGallery } from '../components/TimelineGallery';
+import { TimelinePhotoStack } from '../components/TimelinePhotoStack';
 import {
   Dialog,
   DialogContent,
@@ -338,75 +338,107 @@ export function AboutPage() {
               <div className="h-0.5 w-16 bg-gradient-to-r from-[#E03694] to-transparent mt-6 mx-auto md:mx-0 opacity-70" />
             </div>
 
+            {/* 2. NEW: Narrative Thesis Block */}
+            <div className="mb-32 relative">
+              {/* Featured Visual Accent */}
+              <div className="absolute -left-6 top-2 bottom-2 w-1 bg-gradient-to-b from-[#E03694] via-[#E03694]/50 to-transparent hidden md:block opacity-80" />
+              
+              <p className="text-3xl md:text-5xl text-white leading-tight font-bold mb-12 tracking-tight max-w-5xl">
+                Connection is the foundation of healthy, resilient communities — but it rarely exists by accident.
+              </p>
+              
+              <div className="space-y-8 pl-0 md:pl-0 max-w-3xl">
+                <p className="text-lg md:text-xl text-gray-300 leading-loose font-light">
+                  Across Transylvania County and Western North Carolina, people and organizations are doing meaningful work every day. 
+                  What’s often missing is not care or effort, but the <span className="text-white font-medium">connective structure</span> that allows community voice to surface, 
+                  resources to be shared openly, and collaboration to happen across sectors and geography.
+                </p>
+                <p className="text-lg md:text-xl text-gray-300 font-light leading-loose">
+                  SparkPoint exists to strengthen that connective tissue — fostering community well-being by creating space to 
+                  listen, learn together, and lead collaborative action over time.
+                </p>
+              </div>
+            </div>
+
+            {/* Transition: Context */}
+            <div className="flex items-center gap-4 mb-16 opacity-50">
+                <div className="h-px w-12 bg-white"></div>
+                <span className="text-xs font-bold uppercase tracking-widest text-white">Community Origins</span>
+            </div>
+
             <div className="prose prose-lg prose-invert max-w-none text-gray-300 font-serif">
               
-              {/* Part 1: Roots & Context */}
-              <div className="space-y-10 mb-16">
-                <p className="text-xl md:text-2xl text-white/95 leading-relaxed font-medium">
-                  SparkPoint grew out of several years of community-led work focused on improving health, connection, and resilience across Transylvania County.
+              {/* Part 3: Roots & Context (Blue Zones as Catalyst) */}
+              <div className="space-y-12 mb-24 max-w-2xl">
+                <p className="leading-loose text-gray-300/90">
+                  SparkPoint grew out of a powerful insight surfaced during the Blue Zones Project in Brevard. 
+                  That initiative brought residents and leaders together to understand what supports long-term health. 
+                  While the process successfully certified Brevard as a Blue Zones Community, its most lasting impact wasn’t the designation itself.
                 </p>
 
                 <p className="leading-loose text-gray-300/90">
-                  That work took shape during the Blue Zones Project in Brevard, a place-based initiative that brought residents,
-                  organizations, and local leaders together to better understand what supports long-term well-being.
-                  Through this process, Brevard became a certified Blue Zones Community, recognized for aligning local systems,
-                  environments, and partnerships around healthier ways of living.
+                  It was the realization that well-being requires more than temporary programs. 
+                  The work revealed a deep desire for connection that extended far beyond city limits — and a clear need for a way to sustain that connection over time.
                 </p>
               </div>
 
-              {/* Part 2: The Insight */}
-              <div className="relative pl-6 md:pl-10 border-l border-white/10 space-y-10 mb-16">
-                <p className="leading-loose text-gray-300/90">
-                  As the work deepened, a broader pattern became clear.
-                  While the Blue Zones Project was centered in Brevard, the challenges — and the desire for connection —
-                  extended well beyond city limits. Across Transylvania County, people were already doing meaningful work
-                  in nonprofits, healthcare, education, local government, and neighborhoods, but often without clear pathways
-                  to collaborate or share resources.
-                </p>
-
-                <p className="leading-loose text-gray-300/90">
-                  Listening sessions across the county surfaced a consistent insight.
-                  What was missing wasn’t effort or care.
-                  It was a shared structure that could support connection, elevate community voice,
-                  and make collaboration possible across organizations, sectors, and geography.
+              {/* Part 4: The Insight (Structural Gap) */}
+              <div className="my-24 py-4">
+                <p className="text-2xl md:text-4xl text-white font-medium leading-tight max-w-3xl">
+                  What was missing wasn’t effort or care — it was <span className="italic">shared structure</span>.
                 </p>
               </div>
+              
+              {/* Grouped: Gap Explanation + Proof */}
+              <div className="mb-32">
+                 <div className="space-y-8 mb-16 max-w-2xl">
+                    <p className="leading-loose text-gray-300/90">
+                      Listening sessions across the county confirmed a consistent pattern. 
+                      Nonprofits, healthcare providers, schools, and neighbors were all working hard, but often in isolation. 
+                      Without a shared backbone to coordinate efforts, collaboration relied on goodwill rather than reliable infrastructure.
+                    </p>
+                    <p className="leading-loose text-gray-300/90">
+                      SparkPoint was built to fill that gap. We were shaped by community partners who wanted a durable way to work together — not just for a project, but for the long haul.
+                    </p>
+                 </div>
 
-              {/* Part 3: Formation & Future */}
-              <div className="space-y-10">
-                <p className="leading-loose text-gray-300/90">
-                  The Blue Zones work helped clarify what was possible, but it also revealed a limitation.
-                  Sustaining and expanding that momentum required moving beyond a single town or time-bound initiative.
-                  It called for an inclusive, countywide approach — one designed to grow with the community
-                  and adapt as new needs and opportunities emerged.
+                 {/* Part 6: Hurricane Helene Callout (Proof of Model) */}
+                 <div className="bg-white/5 p-8 md:p-10 rounded-lg border border-white/5 backdrop-blur-sm max-w-3xl">
+                   <p className="leading-loose text-white/95 text-lg mb-6">
+                     When Hurricane Helene tested Transylvania County in 2024, those relationships mattered.
+                     SparkPoint became a coordination point — helping information, volunteers, and resources move more clearly
+                     through the community.
+                   </p>
+                   <p className="text-sm text-[#E03694] font-bold tracking-wide uppercase opacity-90">
+                     Response Capacity Built, Not Improvised
+                   </p>
+                 </div>
+              </div>
+
+              {/* Part 7: Closing (System) */}
+              <div className="pt-16 border-t border-white/10">
+                <p className="text-xl text-white/90 leading-relaxed font-medium mb-16 max-w-4xl">
+                  Today, SparkPoint serves as that connective infrastructure, operating through a continuous loop:
                 </p>
 
-                <p className="leading-loose text-gray-300/90">
-                  Founded in 2023, SparkPoint was shaped by community partners, educators, healthcare providers,
-                  nonprofit leaders, and residents who wanted a better way to work together.
-                  Our role was never to replace existing efforts, but to support alignment,
-                  strengthen relationships, and help shared work extend across Transylvania County
-                  and into the broader Western North Carolina region.
-                </p>
-
-                <div className="bg-white/5 p-8 rounded-lg border border-white/5 backdrop-blur-sm my-12">
-                  <p className="leading-loose text-white mb-6">
-                    When Hurricane Helene tested Transylvania County in 2024, those relationships mattered.
-                    SparkPoint became a coordination point — helping information, volunteers, and resources move more clearly
-                    through the community. The response wasn’t improvised.
-                    It reflected years of listening, learning, and trust-building already in motion.
-                  </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 max-w-4xl">
+                   <div className="relative pl-6 border-l-2 border-[#E03694]">
+                      <span className="block text-white font-bold text-2xl tracking-wide mb-2">Listen</span>
+                      <span className="text-sm text-gray-400 leading-relaxed block">Identifying needs directly from the community source.</span>
+                   </div>
+                   <div className="relative pl-6 border-l-2 border-[#E03694]">
+                      <span className="block text-white font-bold text-2xl tracking-wide mb-2">Learn</span>
+                      <span className="text-sm text-gray-400 leading-relaxed block">Analyzing shared data to find the best path forward.</span>
+                   </div>
+                   <div className="relative pl-6 border-l-2 border-[#E03694]">
+                      <span className="block text-white font-bold text-2xl tracking-wide mb-2">Lead</span>
+                      <span className="text-sm text-gray-400 leading-relaxed block">Taking collaborative action that sticks.</span>
+                   </div>
                 </div>
 
-                <p className="text-xl text-white/90 leading-relaxed font-medium pt-4">
-                  Today, SparkPoint continues to operate through the same feedback loop that shaped its formation:
-                  <br />
-                  <span className="inline-block mt-4 text-[#E03694] font-bold tracking-wide">Listen. Learn. Lead.</span>
-                  <br />
-                  <span className="inline-block mt-4 text-gray-300 text-lg">
-                    By fostering connection, supporting collaboration across sectors,
-                    and empowering community voice, we are building a foundation where every person can thrive.
-                  </span>
+                <p className="text-lg text-gray-300 max-w-2xl leading-loose">
+                    We don’t just run programs; we build the capacity for our community to solve problems together.
+                    By staying grounded in local needs and adaptable to change, we help ensure that every person has the support they need to thrive.
                 </p>
               </div>
             </div>
@@ -415,13 +447,13 @@ export function AboutPage() {
       </section>
 
       {/* 3. Timeline / Milestones */}
-      <section className="py-24 px-6 bg-[#0f0f0f]">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 px-6 bg-[#0a0a0a] overflow-hidden">
+        <div className="max-w-7xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-24 relative z-10"
           >
             <span className="text-[#E03694] font-bold tracking-wider text-sm uppercase mb-3 block">Our Journey</span>
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Milestones of Impact</h2>
@@ -430,90 +462,145 @@ export function AboutPage() {
             </p>
           </motion.div>
 
-          {/* Phase 0: Blue Zones (Distinct Style) */}
-          <div className="mb-20 max-w-4xl mx-auto">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative p-8 md:p-12 rounded-2xl overflow-hidden border border-white/10"
-            >
-              {/* Blue Background with Image Blend */}
-              <div className="absolute inset-0 z-0">
-                <img src={blueZonesImage} alt="" className="w-full h-full object-cover opacity-20 grayscale mix-blend-overlay" />
-                <div className="absolute inset-0 bg-[#0057B8] opacity-10 mix-blend-color" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#1a1a1a]/90 to-[#1a1a1a]/40" />
-              </div>
+          {/* Connector Rail Container */}
+          <div className="relative max-w-5xl mx-auto">
+             {/* The Rail Line (Desktop Only) */}
+             <div className="absolute left-0 md:left-0 top-0 bottom-0 w-px bg-white/10 hidden md:block z-0" />
 
-              <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start">
-                <div className="flex-shrink-0 text-[#E03694] font-bold text-xl md:text-2xl pt-1">
-                  {blueZonesPhase.years}
-                </div>
-                <div className="flex-grow">
-                  <div className="inline-block px-3 py-1 bg-white/10 rounded-full text-xs font-bold text-white mb-4 tracking-wide">
-                    {blueZonesPhase.phaseLabel}
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">{blueZonesPhase.title}</h3>
-                  <p className="text-gray-400 mb-6 italic">{blueZonesPhase.subtitle}</p>
-                  
-                  <ul className="space-y-3">
-                    {blueZonesPhase.achievements.map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-gray-300">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#E03694]" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-6 pt-6 border-t border-white/10 text-sm text-gray-500">
-                    {blueZonesPhase.legalStatus}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+             <div className="space-y-32 md:space-y-48 pb-20">
+                
+                {/* ORIGIN CHAPTER: Blue Zones (2019-2022) - Text Left, Photo Right */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="relative group grid grid-cols-1 md:grid-cols-12 gap-12 items-center"
+                >
+                   {/* Rail Marker */}
+                   <div className="hidden md:block absolute left-0 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[#0057B8] shadow-[0_0_10px_rgba(0,87,184,0.5)] z-20" />
 
-          {/* SparkPoint Timeline */}
-          <div className="max-w-5xl mx-auto space-y-32">
-             {timeline.map((item, index) => (
-               <div key={item.year} className="relative">
-                 {/* Connector Line (except for last item) */}
-                 {index < timeline.length - 1 && (
-                   <div className="absolute left-1/2 top-20 bottom-[-128px] w-px bg-gradient-to-b from-[#E03694] via-[#E03694]/30 to-transparent md:block hidden" />
-                 )}
-                 
-                 <motion.div
-                   initial={{ opacity: 0, y: 50 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   viewport={{ once: true, margin: "-100px" }}
-                   transition={{ duration: 0.8 }}
-                   className="text-center mb-12"
-                 >
-                   <div className="inline-block text-6xl md:text-8xl font-bold text-white/5 tracking-tighter mb-4 relative z-10">
-                     {item.year}
+                   {/* Background Wash */}
+                   <div className="absolute inset-0 -mx-6 md:-mx-12 py-12 md:py-0 bg-blue-900/5 -z-10 rounded-3xl border border-blue-500/10" />
+
+                   {/* Text Column (Left) */}
+                   <div className="col-span-1 md:col-span-7 relative z-10 md:pl-16 text-center md:text-left">
+                      {/* Watermark Year */}
+                      <div className="absolute -top-12 left-0 right-0 md:right-auto md:-top-16 md:-left-8 text-[5rem] md:text-[8rem] font-bold text-[#0057B8]/10 select-none pointer-events-none z-0">
+                         2019
+                      </div>
+
+                      <div className="relative z-10">
+                         <div className="inline-block px-3 py-1 bg-[#0057B8]/20 border border-[#0057B8]/30 rounded-full text-xs font-bold text-blue-200 mb-4 tracking-wide">
+                            {blueZonesPhase.phaseLabel}
+                         </div>
+                         <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">
+                            {blueZonesPhase.title}
+                         </h3>
+                         <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+                            {blueZonesPhase.subtitle}
+                         </p>
+                         <ul className="space-y-2 mb-8 inline-block text-left">
+                            {blueZonesPhase.achievements.map((item, i) => (
+                              <li key={i} className="flex items-center gap-3 text-gray-400 text-sm">
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#0057B8]" />
+                                {item}
+                              </li>
+                            ))}
+                         </ul>
+                         <div className="block">
+                            <motion.div 
+                               className="inline-block px-4 py-2 border bg-black/20 rounded-[12px] text-xs text-[rgb(104,114,150)] font-medium text-[15px] font-bold cursor-default"
+                               style={{ borderColor: "rgba(255, 255, 255, 0.1)" }}
+                               whileHover={{ 
+                                 scale: 1.05, 
+                                 boxShadow: "0 0 20px rgba(104, 114, 150, 0.2)",
+                                 borderColor: "rgba(104, 114, 150, 0.3)"
+                               }}
+                               transition={{ duration: 0.3, ease: "easeOut" }}
+                            >
+                               {blueZonesPhase.legalStatus}
+                            </motion.div>
+                         </div>
+                      </div>
                    </div>
-                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 mt-[-1rem] relative z-20">
-                     {item.milestone}
-                   </h3>
-                   <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-                     {item.description}
-                   </p>
-                   
-                   <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12">
-                      {item.achievements.map((ach, i) => (
-                        <div key={i} className="flex items-center gap-2 text-sm md:text-base text-[#E03694] font-medium bg-[#E03694]/5 px-4 py-2 rounded-full border border-[#E03694]/20">
-                          {ach}
-                        </div>
-                      ))}
-                   </div>
-                 </motion.div>
 
-                 {/* Photo Gallery for this Year */}
-                 <div className="relative z-10">
-                    <TimelineGallery images={item.gallery} />
-                 </div>
-               </div>
-             ))}
+                   {/* Photo Stack (Right) */}
+                   <div className="col-span-1 md:col-span-5 flex justify-center md:justify-end">
+                      <TimelinePhotoStack 
+                         images={[{ src: blueZonesImage, caption: 'Blue Zones Project Brevard' }]} 
+                         label="Community Origins"
+                         milestoneYear="2019–2022"
+                      />
+                   </div>
+                </motion.div>
+
+                {/* Timeline Loop */}
+                {timeline.map((item, index) => {
+                   // Alternate layout: Even index = Photo Left (Row 2), Odd index = Text Left (Row 3)
+                   const isPhotoLeft = index % 2 === 0;
+
+                   return (
+                      <motion.div 
+                        key={item.milestone}
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6 }}
+                        className="relative group grid grid-cols-1 md:grid-cols-12 gap-12 items-center"
+                      >
+                         {/* Rail Marker */}
+                         <div className="hidden md:block absolute left-0 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[#E03694] border-2 border-[#0a0a0a] z-20" />
+                         
+                         {/* Text Column */}
+                         <div className={`col-span-1 md:col-span-7 relative z-10 text-center md:text-left ${isPhotoLeft ? 'md:order-last' : 'md:order-first md:pl-16'}`}>
+                            {/* Watermark Year */}
+                            <div className={`absolute -top-12 left-0 right-0 md:-top-20 text-[5rem] md:text-[9rem] font-bold text-white/5 select-none pointer-events-none z-0 ${isPhotoLeft ? 'md:right-[-2rem] md:left-auto md:text-right' : 'md:left-[-2rem] md:text-left'}`}>
+                               {item.year}
+                            </div>
+                            
+                            <div className="relative z-10">
+                               <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">
+                                  {item.milestone}
+                               </h3>
+                               <p className="text-lg text-gray-400 leading-relaxed mb-6">
+                                  {item.description}
+                               </p>
+                               <div className={`flex flex-wrap gap-2 ${isPhotoLeft ? 'md:justify-end justify-center' : 'md:justify-start justify-center'}`}>
+                                  {item.achievements.map((ach, i) => (
+                                    <span key={i} className="inline-flex items-center px-3 py-1 rounded-full bg-[#E03694]/10 border border-[#E03694]/20 text-[#E03694] text-xs font-medium">
+                                       {ach}
+                                    </span>
+                                  ))}
+                               </div>
+                            </div>
+                         </div>
+
+                         {/* Photo Stack */}
+                         <div className={`col-span-1 md:col-span-5 flex justify-center ${isPhotoLeft ? 'md:order-first md:justify-start md:pl-16' : 'md:order-last md:justify-end'}`}>
+                            <TimelinePhotoStack 
+                               images={item.gallery} 
+                               label={item.year}
+                               milestoneYear={item.year}
+                            />
+                         </div>
+                      </motion.div>
+                   );
+                })}
+
+             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Team Hero Image */}
+      <section className="relative h-[60vh] overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src={teamHeroImage} 
+            alt="SparkPoint Team and Community" 
+            className="w-full h-full object-cover object-[50%_25%]"
+          />
+          <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
         </div>
       </section>
 
@@ -633,17 +720,6 @@ export function AboutPage() {
         </div>
       </section>
 
-      {/* 5. Team Hero Image — "Us" */}
-      <section className="relative h-[60vh] overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src={teamHeroImage} 
-            alt="SparkPoint Team and Community" 
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
-        </div>
-      </section>
     </div>
   );
 }

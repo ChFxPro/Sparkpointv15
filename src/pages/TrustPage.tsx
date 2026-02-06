@@ -6,7 +6,7 @@ import { ExternalLink, ChevronDown, Check, ArrowRight, Shield, Lock, Eye, Heart,
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import candidSeal from 'figma:asset/5a36f7b11c9d0bf970613a37a28b121b31918d77.png';
 import livingWageLogo from 'figma:asset/ec17a6fe91f3b0bf97249c7bd911f4723893563c.png';
 import { useEffect } from 'react';

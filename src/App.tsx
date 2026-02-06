@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router';
 import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Header } from './components/Header';
@@ -17,6 +17,8 @@ import { VolunteerPage } from './pages/VolunteerPage'; // Unused now.
 import { IntakePage } from './pages/IntakePage';
 import { TrustPage } from './pages/TrustPage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import CommunityChampionsArticle from './pages/CommunityChampionsArticle';
+import HeleneOneYearArticle from './pages/HeleneOneYearArticle';
 import { AccessibilityProvider } from './context/AccessibilityContext';
 import { MotionConfig } from 'motion/react';
 
@@ -71,6 +73,8 @@ function AppContent() {
             <Route path="/contact" element={<Navigate to="/intake?intent=contact" replace />} />
             <Route path="/intake" element={<IntakePage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/community-champions/helene-one-year" element={<CommunityChampionsArticle />} />
+            <Route path="/stories/community-champions/helene-anniversary" element={<HeleneOneYearArticle />} />
             <Route path="/trust" element={<TrustPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="*" element={<HomePage />} />

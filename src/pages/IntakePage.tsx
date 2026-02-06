@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import { GuidedIntakeForm } from '../components/GuidedIntakeForm';
 import { motion } from 'motion/react';

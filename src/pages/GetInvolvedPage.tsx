@@ -2,7 +2,7 @@
 
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { HandHeart, DollarSign, Handshake, Mail, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';

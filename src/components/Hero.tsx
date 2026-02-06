@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Button } from './ui/button';
 import { useState, useEffect, useRef } from 'react';
 import { useAccessibility } from '../context/AccessibilityContext';
