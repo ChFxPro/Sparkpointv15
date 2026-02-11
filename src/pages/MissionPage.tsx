@@ -131,6 +131,16 @@ function ListenLearnLeadDiagram() {
   const { motionPreference } = useAccessibility();
   const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
 
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      const svg = document.querySelector('svg[viewBox="0 0 900 900"]') as SVGElement | null;
+      const wrapper = document.querySelector('[data-engine-wrapper]') as HTMLElement | null;
+      const svgRect = svg?.getBoundingClientRect();
+      const wrapperRect = wrapper?.getBoundingClientRect();
+      console.log('ListenLearnLeadDiagram mounted', { svgRect, wrapperRect });
+    }
+  }, []);
+
   // Configuration for the 3 Arcs
   const arcs = [
     {
@@ -191,17 +201,22 @@ function ListenLearnLeadDiagram() {
   };
 
   // Diagram dimensions
-  const size = 800;
+  const size = 900;
   const center = size / 2;
-  const arcRadius = 180;
-  const nodeRadius = 320;
+  const arcRadius = 210;
+  const nodeRadius = 360;
 
   return (
-    <div className="relative w-full aspect-square md:aspect-auto md:h-[600px] max-w-[800px] mx-auto flex flex-col md:block items-center justify-center">
+    <div className="relative w-full h-full max-w-[900px] mx-auto flex flex-col md:block items-center justify-center">
       
       {/* --- Desktop/Tablet SVG Diagram --- */}
       <div className="hidden md:block absolute inset-0">
-        <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full overflow-visible">
+        <svg
+          viewBox={`0 0 ${size} ${size}`}
+          width="100%"
+          height="100%"
+          className="w-full h-full block overflow-visible"
+        >
           <defs>
             {arcs.map(arc => (
               <radialGradient key={arc.id} id={`grad-${arc.id}`} cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
@@ -248,10 +263,12 @@ function ListenLearnLeadDiagram() {
                       stroke={arc.color}
                       strokeWidth={isHovered ? 2 : 1}
                       strokeDasharray="4 4"
-                      initial={{ pathLength: prefersReducedMotion ? 1 : 0, opacity: prefersReducedMotion ? 0.4 : 0 }}
-                      whileInView={{ pathLength: 1, opacity: 0.4 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.5 }}
+                      initial={false}
+                      animate={{ pathLength: 1, opacity: 0.4 }}
+                      transition={{
+                        duration: prefersReducedMotion ? 0 : 1,
+                        delay: prefersReducedMotion ? 0 : 0.5
+                      }}
                     />
                   );
                 })}
@@ -263,10 +280,12 @@ function ListenLearnLeadDiagram() {
                   stroke={arc.color}
                   strokeWidth="36"
                   strokeLinecap="round"
-                  initial={{ pathLength: prefersReducedMotion ? 1 : 0, opacity: prefersReducedMotion ? 1 : 0 }}
-                  whileInView={{ pathLength: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  initial={false}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 1.2,
+                    ease: "easeOut"
+                  }}
                   style={{ filter: isHovered ? "url(#glow-strong)" : "none" }}
                   className="transition-all duration-300"
                 />
@@ -280,10 +299,12 @@ function ListenLearnLeadDiagram() {
           {/* Center Hub */}
           <motion.div 
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-20 pointer-events-auto"
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={false}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.8,
+              delay: prefersReducedMotion ? 0 : 0.2
+            }}
           >
             <div className="relative w-32 h-32 rounded-full bg-[#1A1A1A] border-2 border-[#E03694] flex items-center justify-center shadow-[0_0_40px_rgba(224,54,148,0.4)]">
               {/* Inner Spark */}
@@ -326,7 +347,7 @@ function ListenLearnLeadDiagram() {
                   onMouseLeave={() => setHoveredArc(null)}
                 >
                   <span 
-                    className="text-white font-bold text-lg uppercase tracking-widest px-3 py-1 rounded-full"
+                    className="text-white font-bold text-xl uppercase tracking-widest px-4 py-1.5 rounded-full"
                     style={{ 
                       textShadow: `0 2px 10px ${arc.color}`,
                       backgroundColor: 'rgba(0,0,0,0.4)' 
@@ -346,10 +367,12 @@ function ListenLearnLeadDiagram() {
                       key={i}
                       className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-40 text-center pointer-events-auto"
                       style={{ left: `${nodePos.x}%`, top: `${nodePos.y}%` }}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                      initial={false}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{
+                        duration: prefersReducedMotion ? 0 : 0.5,
+                        delay: prefersReducedMotion ? 0 : 0.6 + i * 0.1
+                      }}
                       onMouseEnter={() => setHoveredArc(arc.id)}
                       onMouseLeave={() => setHoveredArc(null)}
                     >
@@ -360,7 +383,7 @@ function ListenLearnLeadDiagram() {
                       >
                         <NodeIcon size={20} style={{ color: arc.color }} />
                       </motion.div>
-                      <span className="text-white/80 text-xs font-medium leading-tight">
+                      <span className="text-white/80 text-sm font-medium leading-tight">
                         {node.label}
                       </span>
                     </motion.div>
@@ -489,6 +512,13 @@ export function MissionPage() {
   const navigate = useNavigate();
   const [selectedSector, setSelectedSector] = useState<Sector | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [engineDebug, setEngineDebug] = useState<{
+    width: number;
+    isMd: boolean;
+    display: string;
+    wrapperRect?: DOMRect;
+    svgRect?: DOMRect;
+  } | null>(null);
   const systemReducedMotion = useReducedMotion();
   const { motionPreference } = useAccessibility();
   const prefersReducedMotion = systemReducedMotion || motionPreference === 'reduce';
@@ -505,8 +535,31 @@ export function MissionPage() {
     }
   };
 
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const svg = document.querySelector('svg[viewBox="0 0 900 900"]') as SVGElement | null;
+    const wrapper = document.querySelector('[data-engine-wrapper]') as HTMLElement | null;
+    const display = wrapper ? window.getComputedStyle(wrapper).display : 'n/a';
+    setEngineDebug({
+      width: window.innerWidth,
+      isMd: window.matchMedia('(min-width: 768px)').matches,
+      display,
+      wrapperRect: wrapper?.getBoundingClientRect(),
+      svgRect: svg?.getBoundingClientRect()
+    });
+  }, []);
+
   return (
     <div className="min-h-screen relative" ref={containerRef}>
+      {import.meta.env.DEV && engineDebug && (
+        <div className="fixed bottom-4 right-4 z-[9999] rounded-lg bg-black/80 text-white text-xs px-3 py-2 font-mono shadow-lg">
+          <div>width: {engineDebug.width}</div>
+          <div>md: {engineDebug.isMd ? 'true' : 'false'}</div>
+          <div>display: {engineDebug.display}</div>
+          <div>wrapper: {Math.round(engineDebug.wrapperRect?.width || 0)}×{Math.round(engineDebug.wrapperRect?.height || 0)}</div>
+          <div>svg: {Math.round(engineDebug.svgRect?.width || 0)}×{Math.round(engineDebug.svgRect?.height || 0)}</div>
+        </div>
+      )}
       <Helmet>
         <title>Our Mission | SparkPoint</title>
         <meta name="description" content="SparkPoint fosters community well-being rooted in connection." />
@@ -602,8 +655,10 @@ export function MissionPage() {
              transition={{ duration: 0.8 }}
              style={{ boxShadow: '0 25px 60px rgba(0,0,0,0.5)' }}
            >
-              <div className="hidden md:block">
-                <ListenLearnLeadDiagram />
+              <div className="hidden md:flex w-full items-center justify-center" data-engine-wrapper>
+                <div className="relative w-full max-w-[900px] h-[700px]">
+                  <ListenLearnLeadDiagram />
+                </div>
               </div>
 
               {/* Mobile-Specific Guided Sequence */}
@@ -914,7 +969,7 @@ export function MissionPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedSector(null)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm z-0"
             />
             
             <motion.div
@@ -922,12 +977,12 @@ export function MissionPage() {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
+              className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
             >
               <div className="p-8 pb-6 relative overflow-hidden" style={{ backgroundColor: `${selectedSector.color}10` }}>
                 <button 
                   onClick={() => setSelectedSector(null)}
-                  className="absolute top-4 right-4 p-2 bg-white/50 hover:bg-white rounded-full transition-colors"
+                  className="absolute top-4 right-4 p-2 bg-white/50 hover:bg-white rounded-full transition-colors z-20 pointer-events-auto"
                 >
                   <X size={20} className="text-gray-500" />
                 </button>
