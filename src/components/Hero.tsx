@@ -18,9 +18,33 @@ interface HeroProps {
   heroImage: string;
 }
 
-// Swap file extension on a Vite-served asset URL (keeps the same hashed filename)
-function withExt(url: string, ext: 'avif' | 'webp' | 'png') {
-  return url.replace(/\.(png|jpg|jpeg|webp|avif)(\?.*)?$/i, `.${ext}$2`);
+// Determine if the URL is remote (http(s) or protocol-relative)
+function isRemoteUrl(url: string) {
+  return /^([a-z][a-z0-9+\-.]*:)?\/\//i.test(url);
+}
+
+// Build background image with AVIF/WebP/PNG fallbacks for local assets
+function buildBackgroundImage(url: string) {
+  if (isRemoteUrl(url)) {
+    return `url("${url}")`;
+  }
+
+  // Extract filename only (no folders)
+  const fileName = url.split('/').pop()?.replace(/\.(png|jpg|jpeg|webp|avif)$/i, '');
+
+  if (!fileName) {
+    return `url("${url}")`;
+  }
+
+  const pngPath = `/src/assets/${fileName}.png`;
+  const avifPath = `/src/assets/compd/${fileName}.avif`;
+  const webpPath = `/src/assets/compd/${fileName}.webp`;
+
+  return `image-set(
+    url("${avifPath}") type("image/avif"),
+    url("${webpPath}") type("image/webp"),
+    url("${pngPath}") type("image/png")
+  )`;
 }
 
 export function Hero({ heroImage }: HeroProps) {
@@ -97,11 +121,7 @@ export function Hero({ heroImage }: HeroProps) {
           className="absolute inset-0"
           style={{
             // Prefer AVIF/WebP when available, fall back to PNG
-            backgroundImage: `image-set(
-              url("${withExt(mountainBackground, 'avif')}") type("image/avif"),
-              url("${withExt(mountainBackground, 'webp')}") type("image/webp"),
-              url("${withExt(mountainBackground, 'png')}") type("image/png")
-            )`,
+            backgroundImage: buildBackgroundImage(mountainBackground),
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment,

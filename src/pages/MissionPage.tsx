@@ -596,28 +596,105 @@ export function MissionPage() {
           <StackedAnchor />
           
           <div className="max-w-2xl mx-auto mb-12">
-            {/* Option C: Mission Statement label (thematic, compact, not cheesy) */}
-            <div className="flex items-center justify-center mb-4">
+            {/* Option C (refined): Mission Statement label + readable glass scrim */}
+            <div
+              className="relative mx-auto rounded-2xl px-6 py-6 md:px-8 md:py-7 border border-white/10 shadow-xl"
+              style={{
+                background: 'linear-gradient(180deg, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.42) 55%, rgba(0,0,0,0.58) 100%)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                boxShadow: '0 18px 50px rgba(0,0,0,0.45)'
+              }}
+            >
+              {/* subtle highlight ring */}
               <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 bg-black/30 backdrop-blur-md shadow-sm"
-                style={{ boxShadow: '0 0 18px rgba(224,54,148,0.18)' }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#E03694' }} />
-                <span className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: '#E03694' }}>
-                  Mission Statement
-                </span>
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#E03694' }} />
+                className="pointer-events-none absolute inset-0 rounded-2xl"
+                style={{
+                  boxShadow: 'inset 0 0 0 1px rgba(224,54,148,0.14), inset 0 0 40px rgba(224,54,148,0.08)'
+                }}
+              />
+
+              <div className="relative">
+                <div className="flex items-center justify-center mb-5">
+                  {/* Engraved label (etched text + hairline rules) */}
+                  <div className="relative inline-flex items-center justify-center px-2">
+                    <span
+                      aria-hidden="true"
+                      className="hidden sm:block w-16 md:w-20 h-px"
+                      style={{
+                        background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.28) 45%, rgba(255,255,255,0.06) 100%)'
+                      }}
+                    />
+
+                    <span
+                      className="mx-3 md:mx-4 text-[0.95rem] md:text-[1.02rem] font-semibold uppercase"
+                      style={{
+                        letterSpacing: '0.26em',
+                        color: 'rgba(255,255,255,0.62)',
+                        textShadow: '0 1px 0 rgba(0,0,0,0.55), 0 -1px 0 rgba(255,255,255,0.08)'
+                      }}
+                    >
+                      Mission Statement
+                    </span>
+
+                    <span
+                      aria-hidden="true"
+                      className="hidden sm:block w-16 md:w-20 h-px"
+                      style={{
+                        background: 'linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.28) 55%, rgba(255,255,255,0) 100%)'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <h1
+                    className="text-xl md:text-2xl text-white font-semibold leading-relaxed"
+                    style={{ textShadow: '0 8px 28px rgba(0,0,0,0.55)' }}
+                  >
+                    SparkPoint fosters community well-being rooted in connection.
+                  </h1>
+                  {/* Elegant divider */}
+                  <div className="flex items-center justify-center py-2" aria-hidden="true">
+                    <svg
+                      width="320"
+                      height="14"
+                      viewBox="0 0 320 14"
+                      className="w-[240px] md:w-[320px] h-[14px]"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 7H142"
+                        stroke="rgba(255,255,255,0.22)"
+                        strokeWidth="1"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M178 7H314"
+                        stroke="rgba(255,255,255,0.22)"
+                        strokeWidth="1"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M160 1L166 7L160 13L154 7L160 1Z"
+                        fill="rgba(255,255,255,0.14)"
+                        stroke="rgba(255,255,255,0.22)"
+                        strokeWidth="1"
+                      />
+                    </svg>
+                  </div>
+                  <p
+                    className="text-lg md:text-xl font-serif italic leading-relaxed"
+                    style={{
+                      color: 'rgba(255,255,255,0.86)',
+                      textShadow: '0 10px 28px rgba(0,0,0,0.60)'
+                    }}
+                  >
+                    We strengthen Transylvania County by aligning people and organizations around community voice—so resources are shared openly, trust grows, and our region becomes more resilient over time.
+                  </p>
+                </div>
               </div>
-            </div>
-
-            <div className="space-y-6">
-              <h1 className="text-xl md:text-2xl text-white font-medium leading-relaxed">
-                SparkPoint fosters community well-being rooted in connection.
-              </h1>
-
-              <p className="text-lg md:text-xl text-white/80 font-serif italic leading-relaxed font-light">
-                We strengthen Transylvania County by aligning people and organizations around community voice—so resources are shared openly, trust grows, and our region becomes more resilient over time.
-              </p>
             </div>
           </div>
 
