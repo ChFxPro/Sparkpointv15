@@ -595,14 +595,30 @@ export function MissionPage() {
           {/* Stacked Animated Anchor */}
           <StackedAnchor />
           
-          <div className="max-w-2xl mx-auto space-y-8 mb-12">
-            <h1 className="text-xl md:text-2xl text-white font-medium leading-relaxed">
-              SparkPoint fosters community well-being rooted in connection.
-            </h1>
+          <div className="max-w-2xl mx-auto mb-12">
+            {/* Option C: Mission Statement label (thematic, compact, not cheesy) */}
+            <div className="flex items-center justify-center mb-4">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 bg-black/30 backdrop-blur-md shadow-sm"
+                style={{ boxShadow: '0 0 18px rgba(224,54,148,0.18)' }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#E03694' }} />
+                <span className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: '#E03694' }}>
+                  Mission Statement
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#E03694' }} />
+              </div>
+            </div>
 
-            <p className="text-lg md:text-xl text-white/80 font-serif italic leading-relaxed font-light">
-              We strengthen Transylvania County by aligning people and organizations around community voice—so resources are shared openly, trust grows, and our region becomes more resilient over time.
-            </p>
+            <div className="space-y-6">
+              <h1 className="text-xl md:text-2xl text-white font-medium leading-relaxed">
+                SparkPoint fosters community well-being rooted in connection.
+              </h1>
+
+              <p className="text-lg md:text-xl text-white/80 font-serif italic leading-relaxed font-light">
+                We strengthen Transylvania County by aligning people and organizations around community voice—so resources are shared openly, trust grows, and our region becomes more resilient over time.
+              </p>
+            </div>
           </div>
 
           {/* Micro-Nav Buttons */}
