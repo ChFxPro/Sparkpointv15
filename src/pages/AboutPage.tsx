@@ -34,6 +34,12 @@ import maggieHeadshotJpg from '../assets/staff_pics/sp_port26__0001_maggie.jpg';
 
 import jennyHeadshotWebp from '../assets/staff_pics/webp/sp_port26__0000_jenny.webp';
 import jennyHeadshotJpg from '../assets/staff_pics/sp_port26__0000_jenny.jpg';
+
+import joshHeadshotWebp from '../assets/staff_pics/webp/sp_port26__0005_josh.webp';
+import joshHeadshotJpg from '../assets/staff_pics/sp_port26__0005_josh.jpg';
+
+import sophiaHeadshotWebp from '../assets/staff_pics/webp/sp_port26__0006_sophia.webp';
+import sophiaHeadshotJpg from '../assets/staff_pics/sp_port26__0006_sophia.jpg';
 import { Button } from '../components/ui/button';
 import { TimelinePhotoStack } from '../components/TimelinePhotoStack';
 import {
@@ -168,6 +174,9 @@ const staff: StaffMember[] = [
   {
     name: 'Josh Nelson',
     role: 'CPA / Financial Advisor',
+    headshotWebp: joshHeadshotWebp,
+    headshotJpg: joshHeadshotJpg,
+    initials: 'JN',
     bio: `Josh Nelson serves as SparkPoint’s CPA and financial advisor, providing oversight and strategic guidance to ensure the organization’s financial health and long-term sustainability. With more than a decade of experience in public accounting and corporate financial reporting — including leadership roles at a top 15 U.S. public accounting firm and a Fortune Global 500 company — Josh brings deep expertise in compliance, reporting, and financial strategy.
 
 Based in Western North Carolina, Josh partners closely with SparkPoint’s leadership to strengthen financial transparency, support responsible growth, and help steward community resources with care. He is also an active member of the Brevard/Transylvania Chamber of Commerce and the Rotary Club of Pisgah Forest.`
@@ -181,7 +190,8 @@ Based in Western North Carolina, Josh partners closely with SparkPoint’s leade
   {
     name: 'Sophia DePasquale',
     role: 'Intern',
-    headshot: '',
+    headshotWebp: sophiaHeadshotWebp,
+    headshotJpg: sophiaHeadshotJpg,
     initials: 'SD',
     bio: `Sophia joins the SparkPoint team as an intern, supporting our community programs and initiatives. Full bio coming soon.`
   }
