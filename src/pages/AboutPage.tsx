@@ -497,7 +497,7 @@ export function AboutPage() {
             {/* Transition: Context */}
             <div className="flex items-center gap-4 mb-16 opacity-50">
                 <div className="h-px w-12 bg-white"></div>
-                <span className="text-xs font-bold uppercase tracking-widest text-white">Community Origins</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-white">Organization History</span>
             </div>
 
             <div className="prose prose-lg prose-invert max-w-none text-gray-300 font-serif">
@@ -662,7 +662,7 @@ export function AboutPage() {
                    <div className="col-span-1 md:col-span-5 flex justify-center md:justify-end">
                       <TimelinePhotoStack 
                          images={[{ src: blueZonesImage, caption: 'Blue Zones Project Brevard' }]} 
-                         label="Community Origins"
+                         label="Organization History"
                          milestoneYear="2019–2022"
                       />
                    </div>

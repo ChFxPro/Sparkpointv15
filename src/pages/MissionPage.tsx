@@ -238,60 +238,126 @@ function ListenLearnLeadDiagram() {
                 <feMergeNode in="SourceGraphic"/>
               </feMerge>
             </filter>
+
+            {/* Institutional Outer Ring Gradient */}
+            <linearGradient id="outer-ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#E03694" stopOpacity="0.25" />
+              <stop offset="50%" stopColor="#9E509F" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#FDB515" stopOpacity="0.25" />
+            </linearGradient>
           </defs>
 
-          {arcs.map((arc) => {
-            const isHovered = hoveredArc === arc.id;
-            const isDimmed = hoveredArc && hoveredArc !== arc.id;
-            
-            return (
-              <g key={arc.id} 
-                 onMouseEnter={() => setHoveredArc(arc.id)}
-                 onMouseLeave={() => setHoveredArc(null)}
-                 className="cursor-pointer transition-opacity duration-500"
-                 style={{ opacity: isDimmed ? 0.3 : 1 }}
-              >
-                {/* Connector Lines to Nodes */}
-                {arc.nodes.map((node, i) => {
-                  const startPos = polarToCartesian(center, center, arcRadius + 20, node.angle);
-                  const endPos = polarToCartesian(center, center, nodeRadius - 40, node.angle);
-                  return (
-                    <motion.line 
-                      key={i}
-                      x1={startPos.x} y1={startPos.y}
-                      x2={endPos.x} y2={endPos.y}
-                      stroke={arc.color}
-                      strokeWidth={isHovered ? 2 : 1}
-                      strokeDasharray="4 4"
-                      initial={false}
-                      animate={{ pathLength: 1, opacity: 0.4 }}
-                      transition={{
-                        duration: prefersReducedMotion ? 0 : 1,
-                        delay: prefersReducedMotion ? 0 : 0.5
-                      }}
-                    />
-                  );
-                })}
+          {/* Institutional Outer Ring */}
+          <motion.circle
+            cx={center}
+            cy={center}
+            r={arcRadius + 60}
+            fill="none"
+            stroke="url(#outer-ring-grad)"
+            strokeWidth="2"
+            opacity="0.4"
+            animate={
+              prefersReducedMotion
+                ? {}
+                : { opacity: [0.35, 0.5, 0.35] }
+            }
+            transition={
+              prefersReducedMotion
+                ? {}
+                : { duration: 8, repeat: Infinity, ease: "easeInOut" }
+            }
+          />
 
-                {/* Arc Segment */}
-                <motion.path
-                  d={createArcPath(arc.startAngle, arc.endAngle, arcRadius, center, center)}
-                  fill="none"
-                  stroke={arc.color}
-                  strokeWidth="36"
-                  strokeLinecap="round"
-                  initial={false}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{
-                    duration: prefersReducedMotion ? 0 : 1.2,
-                    ease: "easeOut"
-                  }}
-                  style={{ filter: isHovered ? "url(#glow-strong)" : "none" }}
-                  className="transition-all duration-300"
-                />
-              </g>
-            );
-          })}
+          {/* Arc Group */}
+          <g>
+            {arcs.map((arc) => {
+              const isHovered = hoveredArc === arc.id;
+              const isDimmed = hoveredArc && hoveredArc !== arc.id;
+              
+              return (
+                <g key={arc.id} 
+                   onMouseEnter={() => setHoveredArc(arc.id)}
+                   onMouseLeave={() => setHoveredArc(null)}
+                   className="cursor-pointer transition-opacity duration-500"
+                   style={{ opacity: isDimmed ? 0.3 : 1 }}
+                >
+                  {/* Connector Lines to Nodes */}
+                  {arc.nodes.map((node, i) => {
+                    const startPos = polarToCartesian(center, center, arcRadius + 20, node.angle);
+                    const endPos = polarToCartesian(center, center, nodeRadius - 40, node.angle);
+                    return (
+                      <>
+                        <motion.line
+                          key={i}
+                          x1={startPos.x}
+                          y1={startPos.y}
+                          x2={endPos.x}
+                          y2={endPos.y}
+                          stroke={arc.color}
+                          strokeWidth={isHovered ? 2.5 : 1.5}
+                          strokeLinecap="round"
+                          initial={false}
+                          animate={{
+                            pathLength: 1,
+                            opacity: isHovered ? 0.9 : 0.45
+                          }}
+                          transition={{
+                            duration: prefersReducedMotion ? 0 : 1,
+                            delay: prefersReducedMotion ? 0 : 0.4
+                          }}
+                          style={{
+                            filter: isHovered ? "url(#glow-soft)" : "none"
+                          }}
+                        />
+                        <motion.circle
+                          cx={endPos.x}
+                          cy={endPos.y}
+                          r={isHovered ? 4 : 3}
+                          fill={arc.color}
+                          initial={false}
+                          animate={{
+                            opacity: isHovered ? 1 : 0.6,
+                            scale: isHovered ? 1.2 : 1
+                          }}
+                          transition={{
+                            duration: prefersReducedMotion ? 0 : 0.3
+                          }}
+                          style={{
+                            filter: isHovered ? "url(#glow-soft)" : "none"
+                          }}
+                        />
+                      </>
+                    );
+                  })}
+
+                  {/* Arc Segment */}
+                  <motion.path
+                    d={createArcPath(arc.startAngle, arc.endAngle, arcRadius, center, center)}
+                    fill="none"
+                    stroke={arc.color}
+                    strokeWidth="42"
+                    strokeLinecap="round"
+                    strokeDasharray="600"
+                    initial={false}
+                    animate={{
+                      pathLength: 1,
+                      opacity: 1,
+                      scale: isHovered ? 1.03 : 1
+                    }}
+                    transition={{
+                      duration: prefersReducedMotion ? 0 : 1.2,
+                      ease: "easeOut"
+                    }}
+                    style={{
+                      filter: isHovered ? "url(#glow-strong)" : "none",
+                      transformOrigin: `${center}px ${center}px`
+                    }}
+                    className="transition-all duration-300"
+                  />
+                </g>
+              );
+            })}
+          </g>
         </svg>
 
         {/* HTML Layer for Interactivity & Labels */}
@@ -310,8 +376,18 @@ function ListenLearnLeadDiagram() {
               {/* Inner Spark */}
               <motion.div 
                 className="absolute inset-0 rounded-full"
-                animate={{ boxShadow: ["0 0 20px rgba(224,54,148,0.2)", "0 0 40px rgba(224,54,148,0.5)", "0 0 20px rgba(224,54,148,0.2)"] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                animate={{
+                  boxShadow: [
+                    "0 0 15px rgba(224,54,148,0.15)",
+                    "0 0 35px rgba(224,54,148,0.35)",
+                    "0 0 15px rgba(224,54,148,0.15)"
+                  ]
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
               />
               <div className="text-center z-10">
                 <img 
@@ -350,7 +426,8 @@ function ListenLearnLeadDiagram() {
                     className="text-white font-bold text-xl uppercase tracking-widest px-4 py-1.5 rounded-full"
                     style={{ 
                       textShadow: `0 2px 10px ${arc.color}`,
-                      backgroundColor: 'rgba(0,0,0,0.4)' 
+                      backgroundColor: 'rgba(0,0,0,0.4)',
+                      boxShadow: isHovered ? `0 0 20px ${arc.color}60` : 'none'
                     }}
                   >
                     {arc.label}
@@ -379,7 +456,12 @@ function ListenLearnLeadDiagram() {
                       <motion.div 
                         className="w-12 h-12 rounded-full bg-[#1A1A1A] border flex items-center justify-center mb-2 shadow-lg relative z-10"
                         style={{ borderColor: arc.color }}
-                        whileHover={{ scale: 1.15, boxShadow: `0 0 20px ${arc.color}60`, backgroundColor: '#2a2a2a' }}
+                        whileHover={{ 
+                          scale: 1.15, 
+                          y: -4,
+                          boxShadow: `0 0 25px ${arc.color}80`, 
+                          backgroundColor: '#2a2a2a' 
+                        }}
                       >
                         <NodeIcon size={20} style={{ color: arc.color }} />
                       </motion.div>
